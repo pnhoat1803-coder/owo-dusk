@@ -1,0 +1,58 @@
+# ===============================================
+#  Captcha solvers - read this before editing
+# ===============================================
+
+# Two hCaptcha providers are supported and the schema is fixed:
+#   [hcaptcha_solver.captchaly] and [hcaptcha_solver.yescaptcha]
+# A third provider cannot be added here; only those two tables are read.
+#
+# Priority 1 = captchaly.
+#   Reason: lower per-solve cost.
+#   Limitation: its hCaptcha success rate is lower than yescaptcha's.
+#   It runs first for the cost saving, and the automatic fallback to
+#   yescaptcha covers the failures.
+#
+# Priority 2 = yescaptcha.
+#   Reason: slightly higher per-solve cost, but its hCaptcha success rate is
+#   near-certain, so it is the reliable fallback.
+#
+# A lower priority number is tried first. The bot follows the numbers, not the
+# table names, so you may swap the order by editing the two priority values.
+#
+# min_retries / max_retries share the same 3-5 range for both providers. Each
+# solve draws a random retry count from that range for the provider being asked.
+#
+# auto_detect_enterprise applies to captchaly only: it selects between the
+# standard and the enterprise hCaptcha endpoint.
+#
+# The image captcha solver in [image_solver] is free and local. hCaptcha
+# solving is paid and uses the two providers below. OwO logs the IP used to
+# verify a captcha, so be careful when several accounts share one address.
+
+# ----- SETTINGS ----- #
+
+[notifications]
+# If you want to go silent, set this to false. But not recommended
+notify_when_attempting_to_solve = true
+
+[image_solver]
+enabled = false # Change this to true to enable
+
+[hcaptcha_solver]
+# When true, captchaly asks the standard hCaptcha endpoint first and falls back
+# to the enterprise one when OwO rejects the token.
+auto_detect_enterprise = true
+
+[hcaptcha_solver.captchaly]
+enabled = true
+priority = 1
+api_key = "CP_9AfJd6qvVSnR9XPGudxGoEoNz4VNC7oVhnWSKMTF6REQ"
+min_retries = 3
+max_retries = 5
+
+[hcaptcha_solver.yescaptcha]
+enabled = true
+priority = 2
+api_key = "10268d1e5a271912be515271a2a0d52f839894be134223"
+min_retries = 3
+max_retries = 5

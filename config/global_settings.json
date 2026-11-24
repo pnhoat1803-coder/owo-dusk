@@ -1,0 +1,178 @@
+{
+    "typingIndicator": false,
+    "silentMessages": false,
+    "offlineStatus": false,
+    "ocrApi": "",
+    "website": {
+        "enabled": true,
+        "host": "0.0.0.0",
+        "port": 1200,
+        "refreshInterval": 15,
+        "password": "",
+        "separateProcess": true,
+        "enableHost": false
+    },
+    "database": {
+        "logStatistics": true
+    },
+    "account": {
+        "pauseTimeoutSeconds": 60,
+        "stallThresholdSeconds": 600,
+        "waveSize": 15,
+        "waveDelay": [3.0, 6.0],
+        "loginMaxRetries": 3,
+        "globalRatePerSecond": 3.0,
+        "firstSendStaggerStep": 0.25,
+        "firstSendStaggerCap": 600.0,
+        "startupDelay": [
+            1,
+            2
+        ],
+        "commandsStartDelay": [
+            0.1,
+            0.2
+        ],
+        "commandsHandlerStartDelay": [
+            5.6,
+            7.8
+        ]
+    },
+    "replyFallback": {
+        "enabled": true,
+        "firstCheckAfter": 15,
+        "checkEvery": 15,
+        "giveUpAfter": 60,
+        "historyLimit": 15,
+        "maxConcurrentFetches": 4,
+        "holdWhileGatewayDown": false,
+        "dmCaptchaCheckEvery": 60
+    },
+    "textCommands": {
+        "prefix": ".",
+        "commandToStopUser": "stop",
+        "commandToStartUser": "start",
+        "commandToRestartAfterCaptcha": "restart_captcha",
+        "commandToSleep": "sleep",
+        "CommandToSwitchChannel": "switch_channel",
+        "defaultSleepDuration": 600,
+        "allowedUsers": [972366261579288618]
+    },
+    "webhook": {
+        "enabled": true,
+        "logCommandSend": false,
+        "webhookUrl": "https://discord.com/api/webhooks/1572215929692233839/821ATGvIw8deweMyCttCSkyCJcLkr_MNs07WCsYFzqF2Dki1JwyNiM0e0Zu9vyzJFRTw",
+        "webhookCaptchaUrl": null,
+        "webhookUserIdToPingOnCaptcha": "",
+        "animalLog": {
+            "enabled": true,
+            "rank": {
+                "common": false,
+                "uncommon": false,
+                "rare": false,
+                "epic": false,
+                "mythical": false,
+                "gem": false,
+                "legendary": false,
+                "fabled": true,
+                "hidden": true,
+                "distorted": true
+            }
+        },
+        "others": {
+            "logLootbox": true,
+            "logCrate": true,
+            "logChannelSwitch": true
+        }
+    },
+    "console": {
+        "runConsoleCommandOnCaptcha": false,
+        "commandToRunOnCaptcha": "",
+        "runConsoleCommandOnBan": false,
+        "commandToRunOnBan": ""
+    },
+    "captcha": {
+        "openCaptchaWebsite": false,
+        "timeoutSeconds": 600,
+        "flagOnTimeout": true,
+        "notifications": {
+            "enabled": true,
+            "captchaContent": "Captcha Detected: {username} in {channelname}, captcha type: {captchatype}",
+            "bannedContent": "{username} Banned from OwO!",
+            "reccur": {
+                "enabled": true,
+                "timesToReccur": 3
+            }
+        },
+        "playAudio": {
+            "enabled": false,
+            "path": "Beep.mp3"
+        },
+        "toastOrPopup": {
+            "enabled": false,
+            "captchaContent": "Captcha Detected! {username}",
+            "bannedContent": "{username} Banned from OwO!",
+            "termuxToast": {
+                "backgroundColour": "black",
+                "textColour": "red",
+                "position": "middle"
+            }
+        },
+        "termux": {
+            "vibrate": {
+                "enabled": true,
+                "time": 5
+            },
+            "textToSpeech": {
+                "enabled": false,
+                "captchaContent": "Captcha detected! owo",
+                "bannedContent": "Banned from OwO!"
+            }
+        },
+        "stopCodeIfFailedToSolve": true,
+        "stopScope": "account"
+    },
+    "batteryCheck": {
+        "enabled": false,
+        "minPercentage": 15,
+        "refreshInterval": 120
+    },
+    "channelSwitcher": {
+        "enabled": false,
+        "allUsers": {
+            "channels": []
+        },
+        "users": [],
+        "interval": [
+            20,
+            40
+        ],
+        "delayBeforeSwitch": [
+            2,
+            4
+        ]
+    },
+    "debug": {
+        "replyTrace": false,
+        "replyTraceMaxMB": 200,
+        "blockedLoopStackAfter": 5,
+        "gatewayStats": true
+    },
+    "autoStop": {
+        "enabled": false,
+        "afterMinutes": 133,
+        "graceSeconds": 90,
+        "logEveryMinutes": 30
+    },
+    "levelCheck": {
+        "enabled": true,
+        "intervalMinutes": 1440,
+        "firstCheckMinDelayMinutes": 15,
+        "firstCheckMaxDelayMinutes": 75,
+        "maxChecksPerMinuteAllAccounts": 2,
+        "replyTimeoutSeconds": 45,
+        "command": "lvl",
+        "tesseractPath": "third_party/tesseract/tesseract.exe",
+        "saveFailedCards": false,
+        "debug": true
+    }
+}
