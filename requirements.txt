@@ -1,0 +1,25 @@
+discord.py-self @ git+https://github.com/dolfies/discord.py-self@20ae80b398ec83fa272f0a96812140e14868c88f
+Flask==3.1.3
+werkzeug>=3.1
+aiosqlite==0.22.1
+rich==15.0.0
+requests==2.34.2
+aiohttp==3.14.3
+pytz==2026.4
+
+# Needed at runtime by the bot (they were installed by the old setup.py, now they are listed here).
+# Tested on Python 3.13 / Windows: numpy 2.5.3, pillow 12.3.0, onnxruntime 1.31.0, playsound3 3.3.2,
+# plyer 2.1.0, psutil 7.2.2, packaging 26.3. Not pinned so pip can pick a wheel that fits each PC.
+numpy
+pillow
+onnxruntime
+packaging
+
+# Desktop only (Windows/Linux/macOS), setup.py skips them on Termux.
+playsound3
+plyer
+
+# Optional: only used when batteryCheck is enabled (utils/system/battery.py).
+psutil
+
+# pytesseract is NOT listed on purpose: a copy lives in third_party/python (core/level_ocr.py prefers an installed one).
