@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="csrf-token" content="{{ csrf }}">
+  <title data-i18n="m.page.title">OwO-Dusk - Phone</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27%3E%3Ccircle cx=%2712%27 cy=%2712%27 r=%2710.5%27 fill=%27%233b82f6%27 stroke=%27%231d4ed8%27/%3E%3Cellipse cx=%278.6%27 cy=%277.2%27 rx=%275%27 ry=%273%27 fill=%27white%27 fill-opacity=%27.7%27/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="{{ url_for('static', filename='v2/aero.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='v2/liquid.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='v2/m.css') }}">
+  <script src="{{ url_for('static', filename='v2/i18n.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='v2/m.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='v2/liquid.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='v2/glass-wallpaper.js') }}" defer></script>
+</head>
+<body class="m-page" data-tab="home">
+  <!-- Theme, Effects and the choice of phone or desktop. Synchronous, first in <body>, the same as the desktop page -->
+  <script src="{{ url_for('static', filename='v2/nav-boot.js') }}"></script>
+  <div class="lg-wallpaper" aria-hidden="true"></div>
+
+  <div id="m-banner" class="m-banner" role="alert" hidden><span data-i18n="banner.nopass">No dashboard password set. This page is open to this computer only.</span></div>
+
+  <header class="m-head glass strong">
+    <div class="m-brand">
+      <svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-logo"/></svg>
+      <b>OwO-Dusk</b>
+      {% if version %}<span class="m-ver">v{{ version }}</span>{% endif %}
+    </div>
+    <h1 class="m-title" id="m-title" data-i18n="m.tab.home">Home</h1>
+    <button id="m-refresh" class="m-iconbtn" type="button" aria-label="Refresh" data-i18n-aria="m.refresh">
+      <svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-refresh"/></svg>
+    </button>
+  </header>
+  <p id="m-pill" class="m-pill" role="status" aria-live="polite" hidden data-i18n="m.offline">Offline &ndash; retrying</p>
+
+  <main class="m-main">
+    <!-- Home: bot card, three big numbers, three chips, the accounts that need attention -->
+    <section id="v-home" class="m-view" data-tab="home" aria-labelledby="m-title">
+      <article class="m-card m-bot" aria-labelledby="m-bot-label">
+        <div class="m-row-between">
+          <h2 id="m-bot-label" class="m-h2" data-i18n="m.bot">Bot</h2>
+          <span id="m-bot-state" class="m-state">&hellip;</span>
+        </div>
+        <div class="m-bot-buttons">
+          <button id="m-btn-start" class="m-btn m-btn-start" type="button" disabled>
+            <svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-play"/></svg>
+            <span data-i18n="bot.start">Start</span>
+          </button>
+          <button id="m-btn-stop" class="m-btn m-btn-stop" type="button" disabled>
+            <svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-stop"/></svg>
+            <span data-i18n="bot.stop">Stop</span>
+          </button>
+          <button id="m-btn-restart" class="m-btn m-btn-restart" type="button" disabled>
+            <svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-restart"/></svg>
+            <span data-i18n="bot.restart">Restart</span>
+          </button>
+        </div>
+        <p id="m-bot-note" class="m-muted" hidden></p>
+      </article>
+
+      <div class="m-heroes">
+        <div class="m-hero">
+          <span class="m-hero-lab" data-i18n="m.hero.online">Online</span>
+          <b id="m-h-online" class="m-hero-val">&mdash;</b>
+          <span id="m-h-total" class="m-hero-of"></span>
+        </div>
+        <div class="m-hero">
+          <span class="m-hero-lab" data-i18n="m.hero.hpm">Hunts/min</span>
+          <b id="m-h-hpm" class="m-hero-val">&mdash;</b>
+        </div>
+        <div class="m-hero">
+          <span class="m-hero-lab" data-i18n="m.hero.cow">Cowoncy today</span>
+          <b id="m-h-cow" class="m-hero-val">&mdash;</b>
+        </div>
+      </div>
+
+      <div class="m-chips">
+        <div class="m-chip">
+          <span class="m-chip-lab" data-i18n="m.chip.cap">Captcha today</span>
+          <b id="m-c-cap" class="m-chip-val">&mdash;</b>
+        </div>
+        <div class="m-chip">
+          <span class="m-chip-lab" data-i18n="m.chip.err">Errors 1 h</span>
+          <b id="m-c-err" class="m-chip-val">&mdash;</b>
+        </div>
+        <div class="m-chip">
+          <span class="m-chip-lab" data-i18n="m.chip.net">Avg KB/min in</span>
+          <b id="m-c-net" class="m-chip-val">&mdash;</b>
+        </div>
+      </div>
+
+      <section class="m-card" aria-labelledby="m-att-label">
+        <h2 id="m-att-label" class="m-h2" data-i18n="m.attention">Needs attention</h2>
+        <ul id="m-attention" class="m-list"></ul>
+      </section>
+      <p id="m-autostop" class="m-muted m-foot"></p>
+    </section>
+
+    <!-- Accounts: search, state chips, rows that load 25 at a time while the list is scrolled -->
+    <section id="v-accounts" class="m-view" data-tab="accounts" hidden aria-labelledby="m-title">
+      <div class="m-search">
+        <label class="m-sr" for="m-q" data-i18n="m.search.label">Search accounts</label>
+        <input id="m-q" type="search" autocomplete="off" spellcheck="false" enterkeyhint="search"
+               placeholder="Search name or ID" data-i18n-placeholder="m.search">
+      </div>
+      <div id="m-state-chips" class="m-state-chips" role="group" aria-label="Filter by state" data-i18n-aria="m.filter">
+        <button type="button" class="m-fchip on" data-state="" data-i18n="m.filter.all">All</button>
+        <button type="button" class="m-fchip" data-state="hunting" data-i18n="state.hunting">hunting</button>
+        <button type="button" class="m-fchip" data-state="sleeping" data-i18n="state.sleeping">sleeping</button>
+        <button type="button" class="m-fchip" data-state="captcha" data-i18n="state.captcha">captcha</button>
+        <button type="button" class="m-fchip" data-state="paused" data-i18n="state.paused">paused</button>
+        <button type="button" class="m-fchip" data-state="reconnecting" data-i18n="state.reconnecting">reconnecting</button>
+        <button type="button" class="m-fchip" data-state="stopped" data-i18n="state.stopped">stopped</button>
+        <button type="button" class="m-fchip" data-state="offline" data-i18n="state.offline">offline</button>
+      </div>
+      <ul id="m-acc-list" class="m-acc-list"></ul>
+      <div id="m-acc-sentinel" class="m-sentinel" aria-hidden="true"></div>
+      <p id="m-acc-info" class="m-muted m-foot"></p>
+      <p id="m-acc-empty" class="m-empty" hidden data-i18n="m.acc.none">No accounts match.</p>
+    </section>
+
+    <!-- Events: the newest 50, captcha events first in colour -->
+    <section id="v-events" class="m-view" data-tab="events" hidden aria-labelledby="m-title">
+      <ul id="m-events" class="m-list"></ul>
+      <p id="m-events-empty" class="m-empty" hidden data-i18n="m.events.none">No events yet.</p>
+    </section>
+
+    <!-- Logs: the last 200 console lines, read only while this tab is open -->
+    <section id="v-logs" class="m-view" data-tab="logs" hidden aria-labelledby="m-title">
+      <pre id="m-console" class="m-console" role="log" aria-label="Console lines" data-i18n-aria="log.lines"></pre>
+      <p id="m-console-empty" class="m-empty" hidden data-i18n="m.logs.none">No console lines yet.</p>
+    </section>
+
+    <!-- More: theme, language, the addresses on the network, the desktop version, sign out -->
+    <section id="v-more" class="m-view" data-tab="more" hidden aria-labelledby="m-title">
+      <article class="m-card">
+        <h2 id="m-theme-h" class="m-h2" data-i18n="layout.theme">Theme</h2>
+        <div class="m-seg" role="group" aria-labelledby="m-theme-h">
+          <button type="button" class="m-seg-btn" data-theme-pick="auto" aria-pressed="false" data-i18n="layout.theme.auto">Auto</button>
+          <button type="button" class="m-seg-btn" data-theme-pick="dark" aria-pressed="false" data-i18n="layout.theme.dark">Dark</button>
+          <button type="button" class="m-seg-btn" data-theme-pick="light" aria-pressed="false" data-i18n="layout.theme.light">Light</button>
+        </div>
+        <h2 id="m-lang-h" class="m-h2" data-i18n="layout.language">Language</h2>
+        <div class="m-seg" role="group" aria-labelledby="m-lang-h">
+          <button type="button" class="m-seg-btn" data-lang-pick="en" aria-pressed="false">English</button>
+          <button type="button" class="m-seg-btn" data-lang-pick="vi" aria-pressed="false">Tiếng Việt</button>
+        </div>
+      </article>
+
+      <article class="m-card" aria-labelledby="m-lan-label">
+        <h2 id="m-lan-label" class="m-h2" data-i18n="lan.title">Other devices on the network</h2>
+        <ul id="m-lan" class="m-lan"></ul>
+        <p id="m-lan-none" class="m-muted" hidden data-i18n="lan.none">This dashboard only listens on this machine.</p>
+        <p id="m-lan-hint" class="m-muted" hidden data-i18n="lan.hint">To open it from another device, set website.host to 0.0.0.0 and website.password to at least 8 characters, then restart the dashboard.</p>
+      </article>
+
+      <article class="m-card">
+        <button id="m-desktop" class="m-btn m-btn-wide" type="button" data-i18n="m.desktop">Desktop version</button>
+        <form method="post" action="/logout" class="m-signout">
+          <button class="m-btn m-btn-wide m-btn-quiet" type="submit" data-i18n="nav.signout">Sign out</button>
+        </form>
+      </article>
+      <p id="m-version" class="m-muted m-foot"></p>
+    </section>
+  </main>
+
+  <nav class="m-tabbar glass strong" aria-label="Phone views" data-i18n-aria="m.tabs">
+    <button type="button" class="m-tab" data-tab="home">
+      <svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-overview"/></svg>
+      <span data-i18n="m.tab.home">Home</span>
+    </button>
+    <button type="button" class="m-tab" data-tab="accounts">
+      <svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-accounts"/></svg>
+      <span data-i18n="m.tab.accounts">Accounts</span>
+    </button>
+    <button type="button" class="m-tab" data-tab="events">
+      <svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-events"/></svg>
+      <span data-i18n="m.tab.events">Events</span>
+    </button>
+    <button type="button" class="m-tab" data-tab="logs">
+      <svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-logs"/></svg>
+      <span data-i18n="m.tab.logs">Logs</span>
+    </button>
+    <button type="button" class="m-tab" data-tab="more">
+      <svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-settings"/></svg>
+      <span data-i18n="m.tab.more">More</span>
+    </button>
+  </nav>
+
+  <!-- Bottom sheets: one open at a time. Escape, the scrim and Cancel close them -->
+  <div id="m-scrim" class="m-scrim" hidden></div>
+
+  <section id="m-sheet-start" class="m-sheet" role="dialog" aria-modal="true" aria-labelledby="m-start-title" hidden>
+    <div class="m-grip" aria-hidden="true"></div>
+    <h2 id="m-start-title" class="m-h2" data-i18n="bot.dialog.title">Start the bot</h2>
+    <label class="m-field" for="m-start-min">
+      <span data-i18n="bot.dialog.before">Auto-stop after</span>
+      <input id="m-start-min" type="number" inputmode="numeric" min="1" max="1440" step="1" autocomplete="off"
+             aria-describedby="m-start-hint m-start-error">
+      <span data-i18n="bot.dialog.after">minutes (empty = use config)</span>
+    </label>
+    <p id="m-start-hint" class="m-muted" data-i18n="bot.dialog.hint">The number is the run time of this start. Empty uses autoStop from global_settings.json.</p>
+    <p id="m-start-error" class="m-error" role="alert" hidden></p>
+    <div class="m-sheet-actions">
+      <button id="m-start-cancel" class="m-btn m-btn-quiet" type="button" data-i18n="modal.cancel">Cancel</button>
+      <button id="m-start-ok" class="m-btn m-btn-start" type="button" data-i18n="bot.start">Start</button>
+    </div>
+  </section>
+
+  <section id="m-sheet-confirm" class="m-sheet" role="dialog" aria-modal="true" aria-labelledby="m-confirm-msg" hidden>
+    <div class="m-grip" aria-hidden="true"></div>
+    <p id="m-confirm-msg" class="m-body"></p>
+    <div class="m-sheet-actions">
+      <button id="m-confirm-cancel" class="m-btn m-btn-quiet" type="button" data-i18n="modal.cancel">Cancel</button>
+      <button id="m-confirm-ok" class="m-btn m-btn-stop" type="button" data-i18n="modal.ok">Confirm</button>
+    </div>
+  </section>
+
+  <section id="m-sheet-account" class="m-sheet m-sheet-tall" role="dialog" aria-modal="true" aria-labelledby="m-acc-name" hidden>
+    <div class="m-grip" aria-hidden="true"></div>
+    <h2 id="m-acc-name" class="m-h2 m-ellipsis"></h2>
+    <p id="m-acc-chips" class="m-acc-chips"></p>
+    <dl id="m-acc-fields" class="m-dl"></dl>
+    <ul id="m-acc-why" class="m-list m-why"></ul>
+    <div class="m-sheet-actions m-sheet-stack">
+      <button id="m-acc-sleep" class="m-btn m-btn-wide" type="button"></button>
+      <button id="m-acc-open" class="m-btn m-btn-wide m-btn-quiet" type="button" data-i18n="m.acc.open">Open full details</button>
+      <button id="m-acc-close" class="m-btn m-btn-wide m-btn-quiet" type="button" data-i18n="drawer.close">Close</button>
+    </div>
+  </section>
+
+  <div id="m-toast" class="m-toast lg glass-lite lg-strong" data-lg-enter="0" role="status" aria-live="polite" hidden></div>
+</body>
+</html>

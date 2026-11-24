@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="{{ csrf }}">
+  <title data-i18n="page.title">OwO-Dusk - Fleet Command Center v2.6</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27%3E%3Ccircle cx=%2712%27 cy=%2712%27 r=%2710.5%27 fill=%27%233b82f6%27 stroke=%27%231d4ed8%27/%3E%3Cellipse cx=%278.6%27 cy=%277.2%27 rx=%275%27 ry=%273%27 fill=%27white%27 fill-opacity=%27.7%27/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="{{ url_for('static', filename='v2/aero.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='v2/liquid.css') }}">
+  <!-- Health chip: three counts and their words. Tighter spacing keeps three-digit counts inside the chip at 1280 x 720 -->
+  <style>
+    #chip-health .ov-chip-val b { font-size: 17px; }
+    #chip-health .ov-u { margin: 0 4px 0 1px; font-size: 11px; }
+  </style>
+  <script src="{{ url_for('static', filename='v2/i18n.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='v2/app.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='v2/nav.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='v2/liquid.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='v2/glass-wallpaper.js') }}" defer></script>
+</head>
+<body class="obsidian-theme" data-nav="left" data-nav-pinned="1">
+  <!-- Sidebar position, pinned state and theme (and the fixed data-fx="solid"). Synchronous and first in <body>, so they exist before anything is drawn -->
+  <script src="{{ url_for('static', filename='v2/nav-boot.js') }}"></script>
+  <!-- Flat colour first; glass-wallpaper.js swaps this element for a slow WebGL colour wallpaper when the browser has WebGL -->
+  <div class="lg-wallpaper" aria-hidden="true"></div>
+
+  <div id="banner" class="banner" role="alert" hidden><span data-i18n="banner.nopass">No dashboard password set. This page is open to this computer only.</span></div>
+
+  <div class="app-layout">
+    <!-- Collapsible Sidebar / Navigation Shell -->
+    <aside class="sidebar glass strong lg lg-lens lg-nav" id="sidebar" aria-label="Navigation">
+      <div class="brand">
+        <svg class="ic xl brand-logo" aria-hidden="true"><use href="/static/v2/icons.svg#i-logo"/></svg>
+        <div class="brand-text">
+          <div class="brand-title">
+            <b>OwO-Dusk</b>
+            {% if version %}<span class="ver-badge lg-pill" title="Dashboard version" data-i18n-title="brand.version">v{{ version }}</span>{% endif %}
+          </div>
+          <span class="brand-sub-text" data-i18n="brand.sub">Fleet Command</span>
+        </div>
+        <button id="nav-toggle" class="nav-toggle" type="button" aria-expanded="true" aria-controls="sidebar" aria-label="Collapse navigation" data-i18n-aria="nav.collapse" data-i18n-tip="nav.collapseTip">
+          <svg class="ic sm" aria-hidden="true"><use href="/static/v2/icons.svg#i-back"/></svg>
+        </button>
+      </div>
+
+      <nav class="tabs" id="tabs" role="tablist" aria-label="Command Center Views" data-i18n-aria="nav.views">
+        <button class="gel lg-nav-link" role="tab" data-view="overview" title="Overview: Fleet telemetry, states, health & attention" data-i18n-title="nav.tip.overview">
+          <svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-overview"/></svg>
+          <span class="lab" data-i18n="nav.overview">Overview</span>
+        </button>
+        <button class="gel lg-nav-link" role="tab" data-view="accounts" title="Accounts: Live status & per-account management" data-i18n-title="nav.tip.accounts">
+          <svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-accounts"/></svg>
+          <span class="lab" data-i18n="nav.accounts">Accounts</span>
+        </button>
+        <button class="gel lg-nav-link" role="tab" data-view="events" title="Events: Captcha, daily, errors & reconnect waves" data-i18n-title="nav.tip.events">
+          <svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-events"/></svg>
+          <span class="lab" data-i18n="nav.events">Events</span>
+        </button>
+        <button class="gel lg-nav-link" role="tab" data-view="network" title="Network: Inbound telemetry & gateway traffic" data-i18n-title="nav.tip.network">
+          <svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-network"/></svg>
+          <span class="lab" data-i18n="nav.network">Network</span>
+        </button>
+        <button class="gel lg-nav-link" role="tab" data-view="logs" title="Logs: Real-time multi-account console stream" data-i18n-title="nav.tip.logs">
+          <svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-logs"/></svg>
+          <span class="lab" data-i18n="nav.logs">Logs</span>
+        </button>
+        <button class="gel lg-nav-link" role="tab" data-view="runtime" title="Runtime: Fleet operating hours and daily stats" data-i18n-title="nav.tip.runtime">
+          <svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-runtime"/></svg>
+          <span class="lab" data-i18n="nav.runtime">Runtime</span>
+        </button>
+        <button class="gel lg-nav-link" role="tab" data-view="config" title="Configuration: Hot-reload thresholds & bot settings" data-i18n-title="nav.tip.config">
+          <svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-settings"/></svg>
+          <span class="lab" data-i18n="nav.config">Config</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-status">
+        <span id="pill-conn" class="pill lg-pill" role="status" aria-live="polite" hidden data-i18n="conn.reconnecting">Reconnecting&hellip;</span>
+        <div class="bot-ctl" id="bot-ctl" role="group" aria-label="Bot control" data-i18n-aria="bot.group">
+          <span id="bot-state" class="pill off" role="status" aria-live="polite" data-i18n-title="pill.bot.tip"><svg class="ic sm" aria-hidden="true"><use href="/static/v2/icons.svg#i-offline"/></svg><span data-i18n="bot.state.stopped">Stopped</span></span>
+          <span id="bot-cli" class="muted bot-cli" hidden data-i18n="bot.cli">Started from the command line</span>
+          <div class="bot-ctl-buttons">
+            <button id="bot-start" class="gel small lg-btn lg-btn--primary btn-bot-start" type="button" data-bot-action="start" data-i18n-title="bot.start.tip">
+              <svg class="ic sm" aria-hidden="true"><use href="/static/v2/icons.svg#i-play"/></svg>
+              <span class="lab" data-i18n="bot.start">Start</span>
+            </button>
+            <button id="bot-stop" class="gel small lg-btn lg-btn--danger btn-bot-stop" type="button" data-bot-action="stop" data-i18n-title="bot.stop.tip">
+              <svg class="ic sm" aria-hidden="true"><use href="/static/v2/icons.svg#i-stop"/></svg>
+              <span class="lab" data-i18n="bot.stop">Stop</span>
+            </button>
+            <button id="bot-restart" class="gel small lg-btn btn-bot-restart" type="button" data-bot-action="restart" data-i18n-title="bot.restart.tip">
+              <svg class="ic sm" aria-hidden="true"><use href="/static/v2/icons.svg#i-restart"/></svg>
+              <span class="lab" data-i18n="bot.restart">Restart</span>
+            </button>
+          </div>
+          <p id="bot-msg" class="bot-msg" aria-live="polite" hidden></p>
+        </div>
+        <div class="layout-wrap">
+          <div class="layout-row">
+            <button id="nav-layout" class="gel small lg-btn nav-layout-btn" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="nav-layout-pop" title="Where the navigation sits, and whether it stays on screen" data-i18n-title="layout.tip">
+              <svg class="ic sm" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 9h18M9 9v12" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+              <span class="lab" data-i18n="layout.button">Layout</span>
+            </button>
+          </div>
+        </div>
+        <form method="post" action="/logout" class="logout-form">
+          <button class="gel small lg-btn logout-btn" type="submit" title="Sign out of Fleet Command Center" data-i18n-title="nav.signout.tip">
+            <svg class="ic sm" aria-hidden="true"><use href="/static/v2/icons.svg#i-close"/></svg>
+            <span class="lab" data-i18n="nav.signout">Sign out</span>
+          </button>
+        </form>
+      </div>
+    </aside>
+
+    <!-- Main Workspace Area -->
+    <main class="main-content wrap">
+      <!-- Overview View. On a desktop screen (1280 px and up, 650 px and up) it fits one screen, see aero.css -->
+      <section id="view-overview" class="view ov" hidden aria-label="Fleet Overview" data-i18n-aria="nav.overview">
+        <!-- 1. Status strip: bot state, uptime, auto-stop, data sources, and the global fleet controls -->
+        <div class="ov-status glass" data-lg-enter="0">
+          <div class="ov-status-info">
+            <span id="ov-bot" class="pill off" role="status"><svg class="ic sm" aria-hidden="true"><use href="/static/v2/icons.svg#i-offline"/></svg><span data-i18n="bot.state.stopped">Stopped</span></span>
+            <span class="ov-stat"><span data-i18n="status.uptime">Uptime today</span> <b id="uptime">&mdash;</b></span>
+            <span class="ov-stat"><span data-i18n="status.autostop">Auto-stop</span> <b id="autostop">&mdash;</b></span>
+            <span id="sources" class="pill" data-i18n-tip="status.sources.tip">Sources &mdash;</span>
+          </div>
+          <div class="ov-bot-actions" role="group" aria-label="Bot control" data-i18n-aria="bot.group">
+            <button id="ov-bot-start" class="gel small lg-btn lg-btn--primary btn-bot-start" type="button" data-bot-action="start" data-i18n-title="bot.start.tip">
+              <svg class="ic sm" aria-hidden="true"><use href="/static/v2/icons.svg#i-play"/></svg>
+              <span class="lab" data-i18n="bot.start">Start</span>
+            </button>
+            <button id="ov-bot-stop" class="gel small lg-btn lg-btn--danger btn-bot-stop" type="button" data-bot-action="stop" data-i18n-title="bot.stop.tip">
+              <svg class="ic sm" aria-hidden="true"><use href="/static/v2/icons.svg#i-stop"/></svg>
+              <span class="lab" data-i18n="bot.stop">Stop</span>
+            </button>
+            <button id="ov-bot-restart" class="gel small lg-btn btn-bot-restart" type="button" data-bot-action="restart" data-i18n-title="bot.restart.tip">
+              <svg class="ic sm" aria-hidden="true"><use href="/static/v2/icons.svg#i-restart"/></svg>
+              <span class="lab" data-i18n="bot.restart">Restart</span>
+            </button>
+          </div>
+          <div class="fleet-control-actions" role="group" aria-label="Global Fleet Controls" data-i18n-aria="fleet.group">
+            <button id="btn-fleet-sleep" class="gel small lg-btn lg-btn--sleep btn-fleet-warn" type="button" title="Send sleep command to all running accounts" data-i18n-title="fleet.sleep.tip">
+              <svg class="ic sm" aria-hidden="true"><use href="/static/v2/icons.svg#i-sleep"/></svg>
+              <span data-i18n="fleet.sleep">Sleep All</span>
+            </button>
+            <button id="btn-fleet-wake" class="gel small lg-btn btn-fleet-ok" type="button" title="Wake and resume hunting for all accounts" data-i18n-title="fleet.wake.tip">
+              <svg class="ic sm" aria-hidden="true"><use href="/static/v2/icons.svg#i-hunt"/></svg>
+              <span data-i18n="fleet.wake">Wake All</span>
+            </button>
+            <button id="btn-fleet-reset-captcha" class="gel small lg-btn btn-fleet-accent" type="button" title="Clear the captcha flags on every account, so each one hunts again" data-i18n-title="fleet.reset.tip">
+              <svg class="ic sm" aria-hidden="true"><use href="/static/v2/icons.svg#i-refresh"/></svg>
+              <span data-i18n="fleet.reset">Reset Captcha Flags</span>
+            </button>
+          </div>
+          <div id="fleet-action-status" class="fleet-action-status" aria-live="polite"></div>
+        </div>
+
+        <!-- 2. Heroes (the three big numbers) and five compact chips. The JS fills every kpi-* id -->
+        <div id="kpis" class="ov-kpis">
+          <div class="ov-heroes">
+            <article class="ov-hero glass" data-lg-enter="0" data-i18n-tip="hero.online.tip" data-tip="Accounts connected and running out of the registered fleet.">
+              <div class="ov-lab"><svg class="ic sm" aria-hidden="true"><use href="/static/v2/icons.svg#i-accounts"/></svg><span data-i18n="hero.online">Accounts online</span></div>
+              <div class="ov-val"><span id="kpi-online-n">&mdash;</span><span class="ov-of" id="kpi-online-of"></span></div>
+              <div class="ov-ctx" id="kpi-online-ctx">&nbsp;</div>
+              <div class="ov-dist">
+                <div id="fleet-state-bar" class="segmented-bar" role="img" aria-label="Fleet state distribution" data-i18n-aria="state.bar"></div>
+                <div id="fleet-state-legend" class="segmented-legend"></div>
+              </div>
+            </article>
+            <article class="ov-hero glass" data-lg-enter="1" data-i18n-tip="hero.hpm.tip" data-tip="Fleet-wide hunts per minute, rolling 15 min average.">
+              <div class="ov-lab"><svg class="ic sm" aria-hidden="true"><use href="/static/v2/icons.svg#i-hunt"/></svg><span data-i18n="hero.hpm">Hunts / minute</span></div>
+              <div class="ov-val" id="kpi-hpm">&mdash;</div>
+              <div class="ov-ctx"><span data-i18n="hero.hunts">Hunts today:</span> <b id="kpi-hunts">&mdash;</b></div>
+            </article>
+            <article class="ov-hero glass" data-lg-enter="2" data-i18n-tip="hero.cow.tip" data-tip="Net cowoncy earned today across all accounts.">
+              <div class="ov-lab"><svg class="ic sm" aria-hidden="true"><use href="/static/v2/icons.svg#i-cowoncy"/></svg><span data-i18n="hero.cow">Cowoncy today</span></div>
+              <div class="ov-val" id="kpi-cow">&mdash;</div>
+              <div class="ov-ctx"><span data-i18n="hero.total">Fleet total:</span> <b id="kpi-cow-total">&mdash;</b></div>
+            </article>
+          </div>
+          <div class="ov-chips">
+            <div class="ov-chip glass" data-lg-enter="3" id="chip-cap" data-i18n-tip="chip.cap.tip" data-tip="Captchas detected today in run log.">
+              <span class="ov-chip-lab"><svg class="ic sm" aria-hidden="true"><use href="/static/v2/icons.svg#i-captcha"/></svg><span data-i18n="chip.cap">Captchas today</span></span>
+              <span class="ov-chip-val" id="kpi-cap">&mdash;</span>
+            </div>
+            <div class="ov-chip glass" data-lg-enter="3" id="chip-err" data-i18n-tip="chip.err.tip" data-tip="Console exceptions and error lines logged in the past hour.">
+              <span class="ov-chip-lab"><svg class="ic sm" aria-hidden="true"><use href="/static/v2/icons.svg#i-error"/></svg><span data-i18n="chip.err">Errors (1 h)</span></span>
+              <span class="ov-chip-val" id="kpi-err">&mdash;</span>
+            </div>
+            <div class="ov-chip glass" data-lg-enter="3" id="chip-net" data-i18n-tip="chip.net.tip" data-tip="Average inbound gateway bandwidth per account.">
+              <span class="ov-chip-lab"><svg class="ic sm" aria-hidden="true"><use href="/static/v2/icons.svg#i-network"/></svg><span data-i18n="chip.net">Avg inbound KB/min</span></span>
+              <span class="ov-chip-val" id="kpi-net">&mdash;</span>
+            </div>
+            <div class="ov-chip glass" data-lg-enter="3" id="chip-lvl" data-i18n-tip="chip.lvl.tip" data-tip="Average OwO level of accounts read via owolvl card.">
+              <span class="ov-chip-lab"><svg class="ic sm" aria-hidden="true"><use href="/static/v2/icons.svg#i-level"/></svg><span data-i18n="chip.lvl">Fleet avg level</span></span>
+              <span class="ov-chip-val" id="kpi-lvl">&mdash;</span>
+            </div>
+            <div class="ov-chip glass" data-lg-enter="3" id="chip-quest" data-i18n-tip="chip.quest.tip" data-tip="Autoquest: accounts on, done today and Quest Seals in total, read from the quest state.">
+              <span class="ov-chip-lab"><svg class="ic sm" aria-hidden="true"><use href="/static/v2/icons.svg#i-check"/></svg><span data-i18n="chip.quest">Autoquest</span></span>
+              <span class="ov-chip-val" id="kpi-quest">&mdash;</span>
+            </div>
+            <div class="ov-chip glass" data-lg-enter="3" id="chip-health" data-i18n-tip="chip.health.tip" data-tip="Accounts by health rating.">
+              <span class="ov-chip-lab"><svg class="ic sm" aria-hidden="true"><use href="/static/v2/icons.svg#i-check"/></svg><span data-i18n="chip.health">Health</span></span>
+              <span class="ov-chip-val"><b id="kpi-h-good" class="tone-good">&mdash;</b><span class="ov-u" data-i18n="health.good">good</span> &middot; <b id="kpi-h-warn" class="tone-muted">&mdash;</b><span class="ov-u" data-i18n="health.warn">warn</span> &middot; <b id="kpi-h-bad" class="tone-muted">&mdash;</b><span class="ov-u" data-i18n="health.bad">bad</span></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Bottom panels: Needs Attention (scrolls inside its panel); Account Health and Command Breakdown on the right -->
+        <div class="ov-bottom">
+          <section class="panel glass ov-attn" data-lg-enter="4">
+            <h2><svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-error"/></svg><span data-i18n="panel.attention">Needs Attention</span></h2>
+            <ul id="attention" class="list ov-scroll lg-fade"></ul>
+          </section>
+          <div class="ov-side">
+            <section class="panel glass ov-health" data-lg-enter="4">
+              <h2><svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-captcha"/></svg><span data-i18n="panel.health">Account Health</span></h2>
+              <div class="ring-box">
+                <svg id="ring" class="ring" viewBox="0 0 150 150" role="img" aria-label="Account health" data-i18n-aria="panel.health"></svg>
+                <ul id="legend" class="legend"></ul>
+              </div>
+            </section>
+            <section class="panel glass ov-cmds" data-lg-enter="4">
+              <h2><svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-hunt"/></svg><span data-i18n="panel.cmds">Command Breakdown</span></h2>
+              <div id="fleet-command-breakdown" class="command-breakdown-box ov-scroll lg-fade"></div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <!-- Accounts View -->
+      <section id="view-accounts" class="view" hidden aria-label="Accounts Management" data-i18n-aria="nav.accounts">
+        <div class="panel glass acc-panel" data-lg-enter="0">
+          <div class="toolbar acc-toolbar glass strong">
+            <label class="field grow">
+              <svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-search"/></svg>
+              <span class="muted" style="position:absolute;left:-9999px" data-i18n="acc.search.label">Search</span>
+              <input id="q" type="search" placeholder="Search name or ID..." data-i18n-placeholder="acc.search" autocomplete="off">
+            </label>
+            <label class="field">
+              <svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-filter"/></svg>
+              <select id="f-state" aria-label="Filter by state" title="Filter by state" data-i18n-aria="acc.filter.state" data-i18n-title="acc.filter.state">
+                <option value="" data-i18n="acc.allStates">All states</option>
+                <option value="hunting" data-i18n="state.hunting">hunting</option>
+                <option value="sleeping" data-i18n="state.sleeping">sleeping</option>
+                <option value="paused" data-i18n="state.paused">paused</option>
+                <option value="captcha" data-i18n="state.captcha">captcha</option>
+                <option value="reconnecting" data-i18n="state.reconnecting">reconnecting</option>
+                <option value="connecting" data-i18n="state.connecting">connecting</option>
+                <option value="starting" data-i18n="state.starting">starting</option>
+                <option value="stopped" data-i18n="state.stopped">stopped</option>
+                <option value="offline" data-i18n="state.offline">offline</option>
+              </select>
+            </label>
+            <label class="field">
+              <select id="f-health" aria-label="Filter by health" title="Filter by health" data-i18n-aria="acc.filter.health" data-i18n-title="acc.filter.health">
+                <option value="" data-i18n="acc.allHealth">All health</option>
+                <option value="bad" data-i18n="health.bad">bad</option>
+                <option value="warn" data-i18n="health.warn">warn</option>
+                <option value="good" data-i18n="health.good">good</option>
+                <option value="unknown" data-i18n="health.unknown">unknown</option>
+              </select>
+            </label>
+            <label class="field">
+              <svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-sort"/></svg>
+              <select id="f-sort" aria-label="Sort by" title="Sort by" data-i18n-aria="acc.sort" data-i18n-title="acc.sort"></select>
+            </label>
+            <button id="f-order" class="gel small" type="button" title="Reverse sort order" data-i18n-title="acc.order.tip">Desc</button>
+            <label class="field">
+              <select id="f-size" aria-label="Accounts per page" title="Accounts per page" data-i18n-aria="acc.size" data-i18n-title="acc.size">
+                <option value="25">25</option>
+                <option value="50" selected>50</option>
+                <option value="100">100</option>
+                <option value="500" data-i18n="acc.size.all">All</option>
+              </select>
+            </label>
+            <label class="field acc-removed-toggle" data-i18n-title="acc.showRemoved.tip">
+              <input id="f-removed" type="checkbox" aria-describedby="f-removed-txt">
+              <span id="f-removed-txt" data-i18n="acc.showRemoved">Show removed accounts</span>
+            </label>
+            <button id="m-cards" class="gel small on" type="button" title="Card Grid View" data-i18n-title="acc.cards.tip">
+              <svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-grid"/></svg><span data-i18n="acc.cards">Cards</span>
+            </button>
+            <button id="m-table" class="gel small" type="button" title="Compact Table View" data-i18n-title="acc.table.tip">
+              <svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-list"/></svg><span data-i18n="acc.table">Table</span>
+            </button>
+            <div class="pager pager-top" role="navigation" aria-label="Accounts pages" data-i18n-aria="pager.nav">
+              <button class="btn" type="button" data-pg="prev" aria-label="Previous page" data-i18n-aria="pager.prev.aria" data-i18n="pager.prev">&lsaquo; Prev</button>
+              <span class="pager-pages"></span>
+              <button class="btn" type="button" data-pg="next" aria-label="Next page" data-i18n-aria="pager.next.aria" data-i18n="pager.next">Next &rsaquo;</button>
+              <span class="pager-info"></span>
+            </div>
+          </div>
+
+          <div id="cards" class="cards"></div>
+          <div id="tablebox" class="table-wrap glass-lite" hidden>
+            <table>
+              <thead><tr id="thead"></tr></thead>
+              <tbody id="rows"></tbody>
+            </table>
+          </div>
+          <div id="acc-empty" class="empty" hidden data-i18n="acc.empty">No accounts match the criteria.</div>
+          <div class="pager pager-bottom" role="navigation" aria-label="Accounts pages" data-i18n-aria="pager.nav">
+            <button id="p-prev" class="btn" type="button" data-pg="prev" aria-label="Previous page" data-i18n-aria="pager.prev.aria" data-i18n="pager.prev">&lsaquo; Prev</button>
+            <span class="pager-pages"></span>
+            <button id="p-next" class="btn" type="button" data-pg="next" aria-label="Next page" data-i18n-aria="pager.next.aria" data-i18n="pager.next">Next &rsaquo;</button>
+            <span id="p-info" class="pager-info"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Account Detail Slide-Over Drawer View -->
+      <section id="view-account" class="view lg-fade" hidden aria-label="Account Detail" data-i18n-aria="drawer.aria">
+        <div class="panel glass drawer-header-panel" data-lg-enter="0">
+          <div class="toolbar">
+            <a class="gel small drawer-close" href="#accounts" aria-label="Close account drawer" title="Close and return to the account list" data-i18n-aria="drawer.close.aria" data-i18n-title="drawer.close.tip">
+              <svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-back"/></svg><span data-i18n="drawer.close">Close</span>
+            </a>
+            <h2 id="d-title" tabindex="-1" style="margin:0"></h2>
+            <span id="d-chips"></span>
+            <!-- Account Quick Action Controls -->
+            <div class="account-actions-inline" id="d-quick-actions">
+              <button id="d-btn-sleep" class="gel small" type="button" title="Toggle sleep mode for this account" data-i18n-title="drawer.sleep.tip">
+                <svg class="ic sm" aria-hidden="true"><use href="/static/v2/icons.svg#i-sleep"/></svg>
+                <span id="d-lbl-sleep" data-i18n="drawer.sleep">Sleep</span>
+              </button>
+              <button id="d-btn-switch-channel" class="gel small" type="button" title="Switch farming channel" data-i18n-title="drawer.channel.tip">
+                <svg class="ic sm" aria-hidden="true"><use href="/static/v2/icons.svg#i-channel"/></svg>
+                <span data-i18n="drawer.channel">Switch Channel</span>
+              </button>
+            </div>
+          </div>
+          <ul id="d-why" class="list"></ul>
+        </div>
+
+        <div id="d-groups" class="groups"></div>
+
+        <div class="cols" style="margin-top:16px">
+          <div class="panel glass chart-panel" data-lg-enter="1">
+            <h2><svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-hunt"/></svg><span data-i18n="drawer.chart.hunts">Hunts per hour (last 24 h)</span></h2>
+            <div class="chart-container">
+              <svg id="c-hunts" class="chart" viewBox="0 0 320 170" role="img" aria-label="Hunts per hour" data-i18n-aria="drawer.chart.hunts"></svg>
+            </div>
+          </div>
+          <div class="panel glass chart-panel" data-lg-enter="2">
+            <h2><svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-cowoncy"/></svg><span data-i18n="drawer.chart.cow">Cowoncy today (net, by hour)</span></h2>
+            <div class="chart-container">
+              <svg id="c-cow" class="chart" viewBox="0 0 320 170" role="img" aria-label="Cowoncy by hour" data-i18n-aria="drawer.chart.cow"></svg>
+            </div>
+          </div>
+          <div class="panel glass chart-panel" data-lg-enter="3">
+            <h2><svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-network"/></svg><span data-i18n="drawer.chart.net">Inbound KB/min (last 24 h)</span></h2>
+            <div class="chart-container">
+              <svg id="c-net" class="chart" viewBox="0 0 320 170" role="img" aria-label="Inbound per hour" data-i18n-aria="drawer.chart.net"></svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel glass" data-lg-enter="4" style="margin-top:16px">
+          <h2><svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-events"/></svg><span data-i18n="drawer.events">Recent Account Events</span></h2>
+          <ul id="d-events" class="list"></ul>
+        </div>
+      </section>
+
+      <!-- Events View -->
+      <section id="view-events" class="view" hidden aria-label="Events Feed" data-i18n-aria="nav.events">
+        <div class="panel glass" data-lg-enter="0">
+          <div class="toolbar">
+            <label class="field">
+              <svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-filter"/></svg>
+              <select id="e-type" aria-label="Event type" title="Event type" data-i18n-aria="ev.type" data-i18n-title="ev.type">
+                <option value="" data-i18n="ev.allTypes">All types</option>
+                <option value="captcha" data-i18n="ev.type.captcha">captcha</option>
+                <option value="daily" data-i18n="ev.type.daily">daily</option>
+                <option value="error" data-i18n="ev.type.error">error</option>
+                <option value="reconnect" data-i18n="ev.type.reconnect">reconnect</option>
+              </select>
+            </label>
+            <label class="field grow">
+              <svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-search"/></svg>
+              <input id="e-q" type="search" placeholder="Filter by account name..." autocomplete="off" aria-label="Filter by account name" data-i18n-placeholder="ev.search" data-i18n-aria="ev.search">
+            </label>
+            <span class="muted" id="e-info"></span>
+          </div>
+          <ul id="e-list" class="list"></ul>
+        </div>
+      </section>
+
+      <!-- Network View -->
+      <section id="view-network" class="view" hidden aria-label="Gateway Network" data-i18n-aria="nav.network">
+        <div class="panel glass" data-lg-enter="0">
+          <h2><svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-network"/></svg><span data-i18n="net.title">Inbound Gateway Traffic (Top Accounts)</span></h2>
+          <p class="muted" id="n-info"></p>
+          <div id="n-bars" class="bars"></div>
+        </div>
+        <!-- Servers the accounts take the most inbound from, across the fleet. Read only: nothing leaves a server -->
+        <div class="panel glass noisy-panel" data-lg-enter="1">
+          <h2><svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-network"/></svg><span data-i18n="net.noisy.title">Noisy servers</span></h2>
+          <p class="muted" data-i18n="net.noisy.hint">High traffic from a server you don't farm in? Leave that server with the affected accounts.</p>
+          <p class="muted" id="n-noisy-info"></p>
+          <ul id="n-noisy" class="list noisy-list"></ul>
+        </div>
+      </section>
+
+      <!-- Logs View -->
+      <section id="view-logs" class="view" hidden aria-label="Activity Console" data-i18n-aria="nav.logs">
+        <div class="panel glass" data-lg-enter="0">
+          <div class="toolbar">
+            <label class="field grow">
+              <svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-search"/></svg>
+              <input id="l-q" type="search" placeholder="Filter logs by keyword..." autocomplete="off" aria-label="Filter log text" data-i18n-placeholder="log.search" data-i18n-aria="log.search">
+            </label>
+            <label class="field">
+              <select id="l-level" aria-label="Log level" title="Log level" data-i18n-aria="log.level" data-i18n-title="log.level">
+                <option value="" data-i18n="log.all">All levels</option>
+                <option value="warn" data-i18n="log.warn">Warnings &amp; errors</option>
+                <option value="error" data-i18n="log.error">Errors only</option>
+              </select>
+            </label>
+            <span id="l-follow" class="pill ok" title="Scroll lock is active: auto-following new lines" data-i18n-title="log.follow.tip" data-i18n="log.following">Following</span>
+          </div>
+          <div id="console" class="console lg-fade" tabindex="0" role="log" aria-label="Console lines" data-i18n-aria="log.lines"></div>
+        </div>
+      </section>
+
+      <!-- Runtime View -->
+      <section id="view-runtime" class="view" hidden aria-label="Runtime Telemetry" data-i18n-aria="nav.runtime">
+        <div class="panel glass rt-panel" data-lg-enter="0">
+          <h2><svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-runtime"/></svg><span data-i18n="rt.title">Fleet Runtime (Last 7 Days)</span></h2>
+          <p class="rt-total" id="r-total">&mdash;</p>
+          <div id="rt-chart" class="rt-chart">
+            <svg id="c-runtime" class="rt-svg" role="img" aria-label="Weekly runtime" data-i18n-aria="rt.title"></svg>
+          </div>
+          <p class="muted" id="r-info"></p>
+        </div>
+      </section>
+
+      <!-- Configuration: live thresholds (dashboard_view.json) and the default bot profile (settings.json). -->
+      <section id="view-config" class="view" hidden aria-label="Configuration Management" data-i18n-aria="nav.config">
+        <div class="panel glass" data-lg-enter="0">
+          <div class="config-header">
+            <div>
+              <h2><svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-settings"/></svg><span data-i18n="cfg.title">Fleet Configuration Center</span></h2>
+              <p class="muted" data-i18n="cfg.sub">Live thresholds and the default bot profile. Every account uses the same settings.</p>
+            </div>
+            <!-- Sub-tabs Selector -->
+            <div class="config-tabs" id="cfg-tabs" role="tablist">
+              <button id="cfg-tab-dash" class="gel small on" type="button" data-cfg-tab="dashboard">
+                <span data-i18n="cfg.tab.dash">Dashboard &amp; Health</span>
+                <span class="badge ok" data-i18n="cfg.badge.live">Hot-Reload (Live)</span>
+              </button>
+              <button id="cfg-tab-bot" class="gel small" type="button" data-cfg-tab="default">
+                <span data-i18n="cfg.tab.bot">Default Bot Profile</span>
+                <span class="badge warn" data-i18n="cfg.badge.restart">Applies on Restart</span>
+              </button>
+              <button id="cfg-tab-server" class="gel small" type="button" data-cfg-tab="server">
+                <span data-i18n="cfg.tab.server">Server &amp; bot</span>
+                <span class="badge warn" data-i18n="cfg.badge.server">Host and port apply on restart</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="cfg-toolbar">
+            <label class="cfg-search field grow">
+              <svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-search"/></svg>
+              <span class="visually-hidden" data-i18n="cfg.search.label">Search settings</span>
+              <input id="cfg-search" type="search" placeholder="Search settings by name, key or description" autocomplete="off" data-i18n-placeholder="cfg.search">
+            </label>
+            <span id="cfg-count" class="cfg-count-note"></span>
+          </div>
+
+          <div id="cfg-status-banner" class="cfg-banner" hidden></div>
+
+          <!-- Tab 1: Live Dashboard & Health Thresholds -->
+          <div id="cfg-pane-dashboard" class="cfg-pane">
+            <form id="form-cfg-dashboard" class="cfg-form">
+              <details class="cfg-section" open>
+                <summary><span data-i18n="cfg.sec.timing">Refresh and hunt timing</span><span class="cfg-count" data-cfg-count></span></summary>
+                <div class="cfg-rows">
+                  <div class="cfg-row" data-cfg-row>
+                    <div class="cfg-row-head">
+                      <div class="cfg-row-label"><span data-i18n="cfg.label.refreshSeconds">Refresh Interval (seconds)</span><button type="button" class="cfg-info" aria-expanded="false" data-i18n-aria="cfg.info" data-i18n-title="cfg.info">i</button></div>
+                      <div class="cfg-row-key">refreshSeconds <span class="cfg-apply now" data-i18n="cfg.apply.now">Applies immediately</span></div>
+                      <p class="cfg-desc" data-i18n="config.desc.dashboard.refreshSeconds">How often the dashboard rebuilds its data, in seconds (2 to 60). The page polls at the same pace. Without this key, website.refreshInterval from global_settings.json is used.</p>
+                    </div>
+                    <div class="cfg-row-input"><input id="cfg-dash-refresh" name="refreshSeconds" type="number" min="2" max="60" required data-i18n-aria="cfg.label.refreshSeconds"></div>
+                  </div>
+                  <div class="cfg-row" data-cfg-row>
+                    <div class="cfg-row-head">
+                      <div class="cfg-row-label"><span data-i18n="cfg.label.lastHuntWarnSeconds">Last Hunt Warn (seconds)</span><button type="button" class="cfg-info" aria-expanded="false" data-i18n-aria="cfg.info" data-i18n-title="cfg.info">i</button></div>
+                      <div class="cfg-row-key">lastHuntWarnSeconds <span class="cfg-apply now" data-i18n="cfg.apply.now">Applies immediately</span></div>
+                      <p class="cfg-desc" data-i18n="config.desc.dashboard.lastHuntWarnSeconds">An account that has sent no hunt for this long gets a warning. Accounts that are sleeping, paused, in captcha, stopped, offline or not set to hunt are not checked. Range 30 to 86400.</p>
+                    </div>
+                    <div class="cfg-row-input"><input id="cfg-dash-hunt-warn" name="lastHuntWarnSeconds" type="number" min="30" max="86400" required data-i18n-aria="cfg.label.lastHuntWarnSeconds"></div>
+                  </div>
+                  <div class="cfg-row" data-cfg-row>
+                    <div class="cfg-row-head">
+                      <div class="cfg-row-label"><span data-i18n="cfg.label.lastHuntBadSeconds">Last Hunt Bad (seconds)</span><button type="button" class="cfg-info" aria-expanded="false" data-i18n-aria="cfg.info" data-i18n-title="cfg.info">i</button></div>
+                      <div class="cfg-row-key">lastHuntBadSeconds <span class="cfg-apply now" data-i18n="cfg.apply.now">Applies immediately</span></div>
+                      <p class="cfg-desc" data-i18n="config.desc.dashboard.lastHuntBadSeconds">The same stall, at this length, makes the account a problem. It must not be below the warning value. Range 60 to 86400.</p>
+                    </div>
+                    <div class="cfg-row-input"><input id="cfg-dash-hunt-bad" name="lastHuntBadSeconds" type="number" min="60" max="86400" required data-i18n-aria="cfg.label.lastHuntBadSeconds"></div>
+                  </div>
+                </div>
+              </details>
+
+              <details class="cfg-section" open>
+                <summary><span data-i18n="cfg.sec.gateway">Gateway traffic</span><span class="cfg-count" data-cfg-count></span></summary>
+                <div class="cfg-rows">
+                  <div class="cfg-row" data-cfg-row>
+                    <div class="cfg-row-head">
+                      <div class="cfg-row-label"><span data-i18n="cfg.label.inboundWarnKbMin">Inbound Warn (KB/min)</span><button type="button" class="cfg-info" aria-expanded="false" data-i18n-aria="cfg.info" data-i18n-title="cfg.info">i</button></div>
+                      <div class="cfg-row-key">inboundWarnKbMin <span class="cfg-apply now" data-i18n="cfg.apply.now">Applies immediately</span></div>
+                      <p class="cfg-desc" data-i18n="config.desc.dashboard.inboundWarnKbMin">Gateway traffic per account, in KB per minute, from which the account is flagged high. The Network view and the Avg inbound chip use it too. Range 10 to 10000.</p>
+                    </div>
+                    <div class="cfg-row-input"><input id="cfg-dash-inbound-warn" name="inboundWarnKbMin" type="number" min="10" max="10000" required data-i18n-aria="cfg.label.inboundWarnKbMin"></div>
+                  </div>
+                  <div class="cfg-row" data-cfg-row>
+                    <div class="cfg-row-head">
+                      <div class="cfg-row-label"><span data-i18n="cfg.label.inboundBadKbMin">Inbound Bad (KB/min)</span><button type="button" class="cfg-info" aria-expanded="false" data-i18n-aria="cfg.info" data-i18n-title="cfg.info">i</button></div>
+                      <div class="cfg-row-key">inboundBadKbMin <span class="cfg-apply now" data-i18n="cfg.apply.now">Applies immediately</span></div>
+                      <p class="cfg-desc" data-i18n="config.desc.dashboard.inboundBadKbMin">Gateway traffic per account, in KB per minute, from which the account is a problem. It must not be below the warning value. Range 50 to 20000.</p>
+                    </div>
+                    <div class="cfg-row-input"><input id="cfg-dash-inbound-bad" name="inboundBadKbMin" type="number" min="50" max="20000" required data-i18n-aria="cfg.label.inboundBadKbMin"></div>
+                  </div>
+                </div>
+              </details>
+
+              <details class="cfg-section" open>
+                <summary><span data-i18n="cfg.sec.captcha">Captchas and errors</span><span class="cfg-count" data-cfg-count></span></summary>
+                <div class="cfg-rows">
+                  <div class="cfg-row" data-cfg-row>
+                    <div class="cfg-row-head">
+                      <div class="cfg-row-label"><span data-i18n="cfg.label.captchaWarnPerDay">Captchas Warn / Day</span><button type="button" class="cfg-info" aria-expanded="false" data-i18n-aria="cfg.info" data-i18n-title="cfg.info">i</button></div>
+                      <div class="cfg-row-key">captchaWarnPerDay <span class="cfg-apply now" data-i18n="cfg.apply.now">Applies immediately</span></div>
+                      <p class="cfg-desc" data-i18n="config.desc.dashboard.captchaWarnPerDay">Captchas seen since midnight today (local time) from which the account gets a warning and the Captchas chip turns amber. 0 warns on the first captcha. Range 0 to 100.</p>
+                    </div>
+                    <div class="cfg-row-input"><input id="cfg-dash-cap-warn" name="captchaWarnPerDay" type="number" min="0" max="100" required data-i18n-aria="cfg.label.captchaWarnPerDay"></div>
+                  </div>
+                  <div class="cfg-row" data-cfg-row>
+                    <div class="cfg-row-head">
+                      <div class="cfg-row-label"><span data-i18n="cfg.label.captchaBadPerDay">Captchas Bad / Day</span><button type="button" class="cfg-info" aria-expanded="false" data-i18n-aria="cfg.info" data-i18n-title="cfg.info">i</button></div>
+                      <div class="cfg-row-key">captchaBadPerDay <span class="cfg-apply now" data-i18n="cfg.apply.now">Applies immediately</span></div>
+                      <p class="cfg-desc" data-i18n="config.desc.dashboard.captchaBadPerDay">Captchas seen since midnight today from which the account is a problem and the chip turns red. It must not be below the warning value. Range 1 to 100.</p>
+                    </div>
+                    <div class="cfg-row-input"><input id="cfg-dash-cap-bad" name="captchaBadPerDay" type="number" min="1" max="100" required data-i18n-aria="cfg.label.captchaBadPerDay"></div>
+                  </div>
+                  <div class="cfg-row" data-cfg-row>
+                    <div class="cfg-row-head">
+                      <div class="cfg-row-label"><span data-i18n="cfg.label.errorsWarnPerHour">Errors Warn / Hour</span><button type="button" class="cfg-info" aria-expanded="false" data-i18n-aria="cfg.info" data-i18n-title="cfg.info">i</button></div>
+                      <div class="cfg-row-key">errorsWarnPerHour <span class="cfg-apply now" data-i18n="cfg.apply.now">Applies immediately</span></div>
+                      <p class="cfg-desc" data-i18n="config.desc.dashboard.errorsWarnPerHour">Console errors in the last hour from which the account gets a warning and the Errors chip turns amber. 0 warns on the first error. Range 0 to 1000.</p>
+                    </div>
+                    <div class="cfg-row-input"><input id="cfg-dash-err-warn" name="errorsWarnPerHour" type="number" min="0" max="1000" required data-i18n-aria="cfg.label.errorsWarnPerHour"></div>
+                  </div>
+                  <div class="cfg-row" data-cfg-row>
+                    <div class="cfg-row-head">
+                      <div class="cfg-row-label"><span data-i18n="cfg.label.errorsBadPerHour">Errors Bad / Hour</span><button type="button" class="cfg-info" aria-expanded="false" data-i18n-aria="cfg.info" data-i18n-title="cfg.info">i</button></div>
+                      <div class="cfg-row-key">errorsBadPerHour <span class="cfg-apply now" data-i18n="cfg.apply.now">Applies immediately</span></div>
+                      <p class="cfg-desc" data-i18n="config.desc.dashboard.errorsBadPerHour">Console errors in the last hour from which the account is a problem and the chip turns red. It must not be below the warning value. Range 1 to 1000.</p>
+                    </div>
+                    <div class="cfg-row-input"><input id="cfg-dash-err-bad" name="errorsBadPerHour" type="number" min="1" max="1000" required data-i18n-aria="cfg.label.errorsBadPerHour"></div>
+                  </div>
+                </div>
+              </details>
+
+              <div class="cfg-actions">
+                <button class="gel on" type="submit">
+                  <svg class="ic sm" aria-hidden="true"><use href="/static/v2/icons.svg#i-check"/></svg>
+                  <span data-i18n="cfg.save.dash">Save &amp; Hot-Reload Thresholds</span>
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Tab 2: Default Bot Settings. The rows are built by app.js from config/settings.json -->
+          <div id="cfg-pane-default" class="cfg-pane" hidden>
+            <p class="muted cfg-help" data-i18n="cfg.help.default">Accounts read these settings when they next log in. Running accounts pick them up after a bot restart.</p>
+            <form id="form-cfg-default" class="cfg-form">
+              <details class="cfg-section" open>
+                <summary><span data-i18n="cfg.sec.commands">Farming commands</span><span class="cfg-count" data-cfg-count></span></summary>
+                <div id="cfg-farm-cmds" class="cfg-rows"></div>
+                <p id="cfg-quote-status" class="muted cfg-quote-status" hidden></p>
+              </details>
+              <details class="cfg-section" open>
+                <summary><span data-i18n="cfg.sec.sleep">Delays and sleep</span><span class="cfg-count" data-cfg-count></span></summary>
+                <div id="cfg-delays-sleep" class="cfg-rows"></div>
+              </details>
+              <details class="cfg-section" open>
+                <summary><span data-i18n="cfg.sec.gems">Gems and auto-sell</span><span class="cfg-count" data-cfg-count></span></summary>
+                <div id="cfg-gems-autosell" class="cfg-rows"></div>
+              </details>
+              <details class="cfg-section" open>
+                <summary><span data-i18n="cfg.sec.boss">Boss and daily</span><span class="cfg-count" data-cfg-count></span></summary>
+                <div id="cfg-boss-daily" class="cfg-rows"></div>
+              </details>
+              <div class="cfg-actions">
+                <button class="gel on" type="submit">
+                  <svg class="ic sm" aria-hidden="true"><use href="/static/v2/icons.svg#i-check"/></svg>
+                  <span data-i18n="cfg.save.default">Save Default Profile</span>
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Tab 3: the dashboard server and the bot options (website block of global_settings.json). The password is not shown here -->
+          <div id="cfg-pane-server" class="cfg-pane" hidden>
+            <form id="form-cfg-server" class="cfg-form">
+              <details class="cfg-section" open>
+                <summary><span data-i18n="cfg.sec.server">Dashboard server</span><span class="cfg-count" data-cfg-count></span></summary>
+                <div class="cfg-rows">
+                  <div class="cfg-row" data-cfg-row>
+                    <div class="cfg-row-head">
+                      <div class="cfg-row-label"><span data-i18n="cfg.label.host">Listen address</span><button type="button" class="cfg-info" aria-expanded="false" data-i18n-aria="cfg.info" data-i18n-title="cfg.info">i</button></div>
+                      <div class="cfg-row-key">website.host <span class="cfg-apply" data-i18n="cfg.mark.restartDashboard">Applies on dashboard restart</span></div>
+                      <p class="cfg-desc" data-i18n="config.desc.server.host">The IPv4 address the dashboard listens on. 0.0.0.0 lets every device on the network open it (with a password of 8+ characters). 127.0.0.1 keeps it on this machine. Applies when the dashboard restarts.</p>
+                    </div>
+                    <div class="cfg-row-input">
+                      <input id="cfg-srv-host" name="host" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="0.0.0.0" data-i18n-aria="cfg.label.host">
+                      <small id="cfg-srv-host-note" class="muted cfg-srv-note"></small>
+                    </div>
+                  </div>
+                  <div class="cfg-row" data-cfg-row>
+                    <div class="cfg-row-head">
+                      <div class="cfg-row-label"><span data-i18n="cfg.label.port">Port</span><button type="button" class="cfg-info" aria-expanded="false" data-i18n-aria="cfg.info" data-i18n-title="cfg.info">i</button></div>
+                      <div class="cfg-row-key">website.port <span class="cfg-apply" data-i18n="cfg.mark.restartDashboard">Applies on dashboard restart</span></div>
+                      <p class="cfg-desc" data-i18n="config.desc.server.port">The port of the dashboard, from 1024 to 65535. Applies when the dashboard restarts. Other devices open it at http://this-address:port/.</p>
+                    </div>
+                    <div class="cfg-row-input"><input id="cfg-srv-port" name="port" type="number" min="1024" max="65535" step="1" required data-i18n-aria="cfg.label.port"></div>
+                  </div>
+                </div>
+              </details>
+
+              <details class="cfg-section" open>
+                <summary><span data-i18n="cfg.sec.bot">Bot start and stop</span><span class="cfg-count" data-cfg-count></span></summary>
+                <div class="cfg-rows">
+                  <div class="cfg-row" data-cfg-row>
+                    <div class="cfg-row-head">
+                      <div class="cfg-row-label"><span data-i18n="cfg.label.restartOnCrash">Restart the bot after a crash</span><button type="button" class="cfg-info" aria-expanded="false" data-i18n-aria="cfg.info" data-i18n-title="cfg.info">i</button></div>
+                      <div class="cfg-row-key">website.restartOnCrash <span class="cfg-apply now" data-i18n="cfg.apply.now">Applies immediately</span></div>
+                      <p class="cfg-desc" data-i18n="config.desc.server.restartOnCrash">If the bot exits with an error, the dashboard starts it again after 30 seconds, at most 3 times an hour. It never restarts the bot after Stop or after an autoStop. Applies at once.</p>
+                    </div>
+                    <div class="cfg-row-input"><input id="cfg-srv-restart" name="restartOnCrash" type="checkbox" data-i18n-aria="cfg.label.restartOnCrash"></div>
+                  </div>
+                  <div class="cfg-row" data-cfg-row>
+                    <div class="cfg-row-head">
+                      <div class="cfg-row-label"><span data-i18n="cfg.label.startBotOnLaunch">Start the bot with the dashboard</span><button type="button" class="cfg-info" aria-expanded="false" data-i18n-aria="cfg.info" data-i18n-title="cfg.info">i</button></div>
+                      <div class="cfg-row-key">website.startBotOnLaunch <span class="cfg-apply" data-i18n="cfg.mark.launch">Applies on dashboard start</span></div>
+                      <p class="cfg-desc" data-i18n="config.desc.server.startBotOnLaunch">When the dashboard starts and the bot is not running, the dashboard starts the bot. This brings everything back after a server reboot under pm2. Applies when the dashboard starts.</p>
+                    </div>
+                    <div class="cfg-row-input"><input id="cfg-srv-launch" name="startBotOnLaunch" type="checkbox" data-i18n-aria="cfg.label.startBotOnLaunch"></div>
+                  </div>
+                  <div class="cfg-row" data-cfg-row>
+                    <div class="cfg-row-head">
+                      <div class="cfg-row-label"><span data-i18n="cfg.label.stopBotWithDashboard">Stop the bot when the dashboard stops</span><button type="button" class="cfg-info" aria-expanded="false" data-i18n-aria="cfg.info" data-i18n-title="cfg.info">i</button></div>
+                      <div class="cfg-row-key">website.stopBotWithDashboard <span class="cfg-apply now" data-i18n="cfg.apply.now">Applies immediately</span></div>
+                      <p class="cfg-desc" data-i18n="config.desc.server.stopBotWithDashboard">When the dashboard stops (Ctrl+C or pm2 stop), the bot stops too. Off by default: the bot keeps running, and the next dashboard finds it. Applies at once.</p>
+                    </div>
+                    <div class="cfg-row-input"><input id="cfg-srv-stopwith" name="stopBotWithDashboard" type="checkbox" data-i18n-aria="cfg.label.stopBotWithDashboard"></div>
+                  </div>
+                </div>
+              </details>
+
+  <details class="cfg-section" open>
+  <summary><span data-i18n="cfg.sec.locked">Commands that run on this PC</span><span class="cfg-count" data-cfg-count></span></summary>
+  <div class="cfg-rows">
+  <div class="cfg-row" data-cfg-row>
+  <div class="cfg-row-head">
+  <div class="cfg-row-label"><span data-i18n="cfg.locked.cmdCaptcha">Command when a captcha appears</span></div>
+  <div class="cfg-row-key">console.commandToRunOnCaptcha <span class="cfg-apply" data-i18n="cfg.locked.hint">Can only be changed in config/global_settings.json</span></div>
+  </div>
+  <div class="cfg-row-input"><input id="cfg-lock-cmd-captcha" type="text" readonly autocomplete="off" spellcheck="false" data-i18n-aria="cfg.locked.cmdCaptcha"></div>
+  </div>
+  <div class="cfg-row" data-cfg-row>
+  <div class="cfg-row-head">
+  <div class="cfg-row-label"><span data-i18n="cfg.locked.cmdBan">Command when the account is banned</span></div>
+  <div class="cfg-row-key">console.commandToRunOnBan <span class="cfg-apply" data-i18n="cfg.locked.hint">Can only be changed in config/global_settings.json</span></div>
+  </div>
+  <div class="cfg-row-input"><input id="cfg-lock-cmd-ban" type="text" readonly autocomplete="off" spellcheck="false" data-i18n-aria="cfg.locked.cmdBan"></div>
+  </div>
+  <div class="cfg-row" data-cfg-row>
+  <div class="cfg-row-head">
+  <div class="cfg-row-label"><span data-i18n="cfg.locked.runCaptcha">Run a console command when a captcha appears</span></div>
+  <div class="cfg-row-key">console.runConsoleCommandOnCaptcha <span class="cfg-apply" data-i18n="cfg.locked.hint">Can only be changed in config/global_settings.json</span></div>
+  </div>
+  <div class="cfg-row-input"><input id="cfg-lock-run-captcha" type="checkbox" disabled data-i18n-aria="cfg.locked.runCaptcha"></div>
+  </div>
+  <div class="cfg-row" data-cfg-row>
+  <div class="cfg-row-head">
+  <div class="cfg-row-label"><span data-i18n="cfg.locked.runBan">Run a console command when the account is banned</span></div>
+  <div class="cfg-row-key">console.runConsoleCommandOnBan <span class="cfg-apply" data-i18n="cfg.locked.hint">Can only be changed in config/global_settings.json</span></div>
+  </div>
+  <div class="cfg-row-input"><input id="cfg-lock-run-ban" type="checkbox" disabled data-i18n-aria="cfg.locked.runBan"></div>
+  </div>
+  <div class="cfg-row" data-cfg-row>
+  <div class="cfg-row-head">
+  <div class="cfg-row-label"><span data-i18n="cfg.locked.tesseract">Tesseract program used by the level check</span></div>
+  <div class="cfg-row-key">levelCheck.tesseractPath <span class="cfg-apply" data-i18n="cfg.locked.hint">Can only be changed in config/global_settings.json</span></div>
+  </div>
+  <div class="cfg-row-input"><input id="cfg-lock-tesseract" type="text" readonly autocomplete="off" spellcheck="false" data-i18n-aria="cfg.locked.tesseract"></div>
+  </div>
+  </div>
+  </details>
+
+              <details class="cfg-section" open>
+                <summary><span data-i18n="cfg.sec.gateway">Gateway traffic</span><span class="cfg-count" data-cfg-count></span></summary>
+                <div class="cfg-rows">
+                  <div class="cfg-row" data-cfg-row>
+                    <div class="cfg-row-head">
+                      <div class="cfg-row-label"><span data-i18n="cfg.label.gw.lean">Lean gateway</span><button type="button" class="cfg-info" aria-expanded="false" data-i18n-aria="cfg.info" data-i18n-title="cfg.info">i</button></div>
+                      <div class="cfg-row-key">gateway.lean <span class="cfg-apply" data-i18n="cfg.apply.restart">Applies on restart</span></div>
+                      <p class="cfg-desc" data-i18n="config.desc.global.gateway.lean">Lean gateway: the bot reads only its spam channel and the DM with OwO.</p>
+                    </div>
+                    <div class="cfg-row-input"><input id="cfg-gw-lean" name="gwLean" type="checkbox" data-i18n-aria="cfg.label.gw.lean"></div>
+                  </div>
+                  <div class="cfg-row" data-cfg-row>
+                    <div class="cfg-row-head">
+                      <div class="cfg-row-label"><span data-i18n="cfg.label.gw.chunk">Load member lists at start</span><button type="button" class="cfg-info" aria-expanded="false" data-i18n-aria="cfg.info" data-i18n-title="cfg.info">i</button></div>
+                      <div class="cfg-row-key">gateway.chunkGuilds <span class="cfg-apply" data-i18n="cfg.apply.restart">Applies on restart</span></div>
+                      <p class="cfg-desc" data-i18n="config.desc.global.gateway.chunkGuilds">Ask Discord for every member list when the bot starts.</p>
+                    </div>
+                    <div class="cfg-row-input"><input id="cfg-gw-chunk" name="gwChunk" type="checkbox" data-i18n-aria="cfg.label.gw.chunk"></div>
+                  </div>
+                  <div class="cfg-row" data-cfg-row>
+                    <div class="cfg-row-head">
+                      <div class="cfg-row-label"><span data-i18n="cfg.label.gw.subs">Subscribe to every server</span><button type="button" class="cfg-info" aria-expanded="false" data-i18n-aria="cfg.info" data-i18n-title="cfg.info">i</button></div>
+                      <div class="cfg-row-key">gateway.guildSubscriptions <span class="cfg-apply" data-i18n="cfg.apply.restart">Applies on restart</span></div>
+                      <p class="cfg-desc" data-i18n="config.desc.global.gateway.guildSubscriptions">Subscribe to every server at login: typing, presence and member events.</p>
+                    </div>
+                    <div class="cfg-row-input"><input id="cfg-gw-subs" name="gwSubs" type="checkbox" data-i18n-aria="cfg.label.gw.subs"></div>
+                  </div>
+                  <div class="cfg-row" data-cfg-row>
+                    <div class="cfg-row-head">
+                      <div class="cfg-row-label"><span data-i18n="cfg.label.gw.max">Message cache size</span><button type="button" class="cfg-info" aria-expanded="false" data-i18n-aria="cfg.info" data-i18n-title="cfg.info">i</button></div>
+                      <div class="cfg-row-key">gateway.maxMessages <span class="cfg-apply" data-i18n="cfg.apply.restart">Applies on restart</span></div>
+                      <p class="cfg-desc" data-i18n="config.desc.global.gateway.maxMessages">Messages kept in memory per account. Keep at least 200.</p>
+                    </div>
+                    <div class="cfg-row-input"><input id="cfg-gw-max" name="gwMax" type="number" min="0" max="1000" step="1" data-i18n-aria="cfg.label.gw.max"></div>
+                  </div>
+                  <div class="cfg-row" data-cfg-row>
+                    <div class="cfg-row-head">
+                      <div class="cfg-row-label"><span data-i18n="cfg.label.gw.request">Request guilds (experimental)</span><button type="button" class="cfg-info" aria-expanded="false" data-i18n-aria="cfg.info" data-i18n-title="cfg.info">i</button></div>
+                      <div class="cfg-row-key">gateway.requestGuilds <span class="cfg-apply" data-i18n="cfg.apply.restart">Applies on restart</span></div>
+                      <p class="cfg-desc" data-i18n="config.desc.global.gateway.requestGuilds">Experimental. The old name of guildSubscriptions.</p>
+                    </div>
+                    <div class="cfg-row-input"><input id="cfg-gw-request" name="gwRequest" type="checkbox" data-i18n-aria="cfg.label.gw.request"></div>
+                  </div>
+                </div>
+              </details>
+
+              <div class="cfg-actions">
+                <button class="gel on" type="submit">
+                  <svg class="ic sm" aria-hidden="true"><use href="/static/v2/icons.svg#i-check"/></svg>
+                  <span data-i18n="cfg.save.server">Save server &amp; bot settings</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="drawer-scrim" class="drawer-scrim" hidden></div>
+
+  <!-- Layout popover, opened by the Layout button in the navigation. It sits here, outside the sidebar, so it is never clipped -->
+  <div id="nav-layout-pop" class="nav-pop glass strong lg lg-lens lg-pop" role="dialog" aria-labelledby="nav-pop-title" hidden>
+    <h3 id="nav-pop-title" data-i18n="layout.title">Navigation layout</h3>
+    <div class="nav-pop-section">
+      <p class="nav-pop-label" id="nav-pos-label" data-i18n="layout.position">Position</p>
+      <div class="lg-seg" role="group" aria-labelledby="nav-pos-label">
+        <button type="button" class="seg-btn" data-nav-pos="left" aria-pressed="false" data-i18n="layout.pos.left">Left</button>
+        <button type="button" class="seg-btn" data-nav-pos="right" aria-pressed="false" data-i18n="layout.pos.right">Right</button>
+        <button type="button" class="seg-btn" data-nav-pos="top" aria-pressed="false" data-i18n="layout.pos.top">Top</button>
+        <button type="button" class="seg-btn" data-nav-pos="bottom" aria-pressed="false" data-i18n="layout.pos.bottom">Bottom</button>
+      </div>
+    </div>
+    <div class="nav-pop-row">
+      <div>
+        <span class="nav-pop-label" id="nav-pin-label" data-i18n="layout.pinned">Pinned</span>
+        <small class="muted" data-i18n="layout.pinned.hint">On: the bar stays on screen. Off: it scrolls away with the page.</small>
+      </div>
+      <button id="nav-pin" type="button" class="lg-switch" role="switch" aria-checked="true" aria-labelledby="nav-pin-label"></button>
+    </div>
+    <div class="nav-pop-section">
+      <p class="nav-pop-label" id="nav-theme-label" data-i18n="layout.theme">Theme</p>
+      <div class="lg-seg" role="group" aria-labelledby="nav-theme-label">
+        <button type="button" class="seg-btn" data-theme-pick="auto" aria-pressed="false"><svg class="ic sm" aria-hidden="true"><use href="/static/v2/icons.svg#i-half"/></svg><span data-i18n="layout.theme.auto">Auto</span></button>
+        <button type="button" class="seg-btn" data-theme-pick="dark" aria-pressed="false" data-i18n="layout.theme.dark">Dark</button>
+        <button type="button" class="seg-btn" data-theme-pick="light" aria-pressed="false" data-i18n="layout.theme.light">Light</button>
+      </div>
+    </div>
+    <div class="nav-pop-section">
+      <p class="nav-pop-label" id="nav-lang-label" data-i18n="layout.language">Language</p>
+      <div class="lg-seg" role="group" aria-labelledby="nav-lang-label">
+        <button type="button" class="seg-btn" data-lang-pick="en" aria-pressed="false">English</button>
+        <button type="button" class="seg-btn" data-lang-pick="vi" aria-pressed="false">Tiếng Việt</button>
+      </div>
+    </div>
+    <div class="nav-pop-section" id="lan-section">
+      <p class="nav-pop-label" id="lan-label" data-i18n="lan.title">Other devices on the network</p>
+      <ul id="lan-list" class="lan-list" aria-labelledby="lan-label"></ul>
+      <p id="lan-none" class="muted nav-pop-note" hidden data-i18n="lan.none">This dashboard only listens on this machine.</p>
+      <p id="lan-hint" class="muted nav-pop-note" hidden data-i18n="lan.hint">To open it from another device, set website.host to 0.0.0.0 and website.password to at least 8 characters, then restart the dashboard.</p>
+    </div>
+    <div class="nav-pop-section nav-phone-sec">
+      <a id="nav-phone" class="gel small lg-btn nav-phone-link" href="/m" data-i18n="layout.phone">Phone version</a>
+    </div>
+    <p id="nav-forced-note" class="muted nav-pop-note" hidden data-i18n="layout.forced">Under 768 px the bar is always at the bottom and pinned. Your choice is kept for wider screens.</p>
+  </div>
+
+  <!-- Custom Accessible Tooltip Container -->
+  <div id="obsidian-tooltip" class="obsidian-tooltip" role="tooltip" aria-hidden="true"></div>
+
+  <!-- Channel Switch Modal Dialog -->
+  <div id="modal-channel" class="modal-backdrop" hidden>
+    <div class="modal-box glass" role="dialog" aria-modal="true" aria-labelledby="modal-channel-title">
+      <h3 id="modal-channel-title" data-i18n="modal.channel.title">Switch Active Channel</h3>
+      <p class="muted"><span data-i18n="modal.channel.text">Enter a valid Discord text channel ID for</span> <b id="modal-channel-account"></b>.</p>
+      <input type="text" id="modal-channel-input" inputmode="numeric" placeholder="Channel ID (15-22 digits)" autocomplete="off" aria-describedby="modal-channel-error" data-i18n-placeholder="modal.channel.placeholder">
+      <p id="modal-channel-error" class="modal-error" role="alert" hidden></p>
+      <div class="modal-actions">
+        <button id="modal-channel-cancel" class="gel small" type="button" data-i18n="modal.cancel">Cancel</button>
+        <button id="modal-channel-confirm" class="gel small on" type="button" data-i18n="drawer.channel">Switch Channel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Start the bot: an optional auto-stop in minutes. Empty uses the autoStop of the config -->
+  <div id="modal-start" class="modal-backdrop" hidden>
+    <div class="modal-box glass" role="dialog" aria-modal="true" aria-labelledby="modal-start-title">
+      <h3 id="modal-start-title" data-i18n="bot.dialog.title">Start the bot</h3>
+      <p class="bot-dialog-line">
+        <span data-i18n="bot.dialog.before">Auto-stop after</span>
+        <input id="modal-start-min" class="bot-min-input" type="number" inputmode="numeric" min="1" max="1440" step="1" autocomplete="off" data-i18n-aria="bot.dialog.before" aria-describedby="modal-start-hint modal-start-error">
+        <span data-i18n="bot.dialog.after">minutes (empty = use config)</span>
+      </p>
+      <p id="modal-start-hint" class="muted" data-i18n="bot.dialog.hint">The number is the run time of this start. Empty uses autoStop from global_settings.json.</p>
+      <p id="modal-start-error" class="modal-error" role="alert" hidden></p>
+      <div class="modal-actions">
+        <button id="modal-start-cancel" class="gel small" type="button" data-i18n="modal.cancel">Cancel</button>
+        <button id="modal-start-ok" class="gel small lg-btn lg-btn--primary btn-bot-start" type="button" data-i18n="bot.start">Start</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fleet Action Confirmation Modal Dialog -->
+  <div id="modal-confirm" class="modal-backdrop" hidden>
+    <div class="modal-box glass" role="dialog" aria-modal="true" aria-labelledby="modal-confirm-title">
+      <h3 id="modal-confirm-title" data-i18n="modal.confirm.title">Confirm Action</h3>
+      <p id="modal-confirm-msg" class="muted"></p>
+      <div class="modal-actions">
+        <button id="modal-confirm-cancel" class="gel small" type="button" data-i18n="modal.cancel">Cancel</button>
+        <button id="modal-confirm-ok" class="gel small on" type="button" data-i18n="modal.ok">Confirm</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,534 @@
+/* ==========================================================================
+   liquid.css  -  Flat, minimal layer for the OwO-Dusk dashboard (v3, flat)
+   The file keeps its name (the templates and other prompts load it) but the Liquid Glass look is gone: no backdrop-filter,
+   no edge lens, no pointer glint, no specular rim, no gradients. Panels and controls are solid colours with a 1px border and
+   a very small shadow. Motion uses transform, opacity and colour only, so it stays cheap on a phone and a small server.
+   Load AFTER aero.css. This file only sets colour, shape and motion.
+   Layout (grid, nav positions, page structure) stays in aero.css.
+   The animated wallpaper behind everything is glass-wallpaper.js; it reads --lg-wall-0 .. --lg-wall-4 from here.
+   ========================================================================== */
+
+/* 1. Tokens: dark (default) ------------------------------------------------ */
+:root,
+:root[data-theme="dark"] {
+  --lg-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI Variable Text", "Segoe UI", Roboto, "Noto Sans", "Helvetica Neue", Arial, sans-serif;
+  --lg-font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI Variable Display", "Segoe UI", Roboto, "Noto Sans", "Helvetica Neue", Arial, sans-serif;
+
+  /* wallpaper: glass-wallpaper.js paints blobs 1-4 on top of the base colour 0 */
+  --lg-wall-0: #0f1219;
+  --lg-wall-1: rgba(58, 104, 255, .58);
+  --lg-wall-2: rgba(0, 190, 212, .40);
+  --lg-wall-3: rgba(140, 86, 255, .50);
+  --lg-wall-4: rgba(255, 84, 160, .26);
+
+  /* surfaces: solid, opaque */
+  --lg-tint: #1a1f2e;
+  --lg-tint-strong: #161b28;
+  --lg-tint-panel: #181d2a;
+  --lg-tint-lite: #1e2436;
+  --lg-tint-clear: #1a1f2e;
+  --lg-nest: #222838;
+  --lg-hover: #2a3044;
+  --lg-press: #323a50;
+  --lg-solid: #141b30;
+  --lg-solid-2: #1b2340;
+  --lg-edge: rgba(255, 255, 255, .10);
+
+  /* no rim, glint, sheen or inner light in the flat look (the tokens stay, so a reference to one cannot break) */
+  --lg-rim-1: transparent;
+  --lg-rim-2: transparent;
+  --lg-rim-3: transparent;
+  --lg-glint: transparent;
+  --lg-sheen: transparent;
+  --lg-inner-1: transparent;
+  --lg-inner-2: transparent;
+  --lg-shadow: 0 1px 3px rgba(0, 0, 0, .18);
+  --lg-shadow-sm: 0 1px 2px rgba(0, 0, 0, .12);
+  --lg-scrim: rgba(3, 6, 14, .50);
+  --lg-track: rgba(0, 0, 0, .26);
+  --lg-thumb: rgba(255, 255, 255, .16);
+  --lg-knob: #f4f7ff;
+}
+
+/* 1b. Tokens: light -------------------------------------------------------- */
+:root[data-theme="light"] {
+  --lg-wall-0: #f5f6fa;
+  --lg-wall-1: rgba(90, 136, 255, .42);
+  --lg-wall-2: rgba(60, 206, 226, .36);
+  --lg-wall-3: rgba(170, 132, 255, .36);
+  --lg-wall-4: rgba(255, 140, 190, .26);
+
+  --lg-tint: #ffffff;
+  --lg-tint-strong: #f8f9fc;
+  --lg-tint-panel: #ffffff;
+  --lg-tint-lite: #f2f4f8;
+  --lg-tint-clear: #ffffff;
+  --lg-nest: #f0f2f6;
+  --lg-hover: #e8eaf0;
+  --lg-press: #dde0e8;
+  --lg-solid: #ffffff;
+  --lg-solid-2: #f5f6fa;
+  --lg-edge: rgba(0, 0, 0, .08);
+
+  --lg-rim-1: transparent;
+  --lg-rim-2: transparent;
+  --lg-rim-3: transparent;
+  --lg-glint: transparent;
+  --lg-sheen: transparent;
+  --lg-inner-1: transparent;
+  --lg-inner-2: transparent;
+  --lg-shadow: 0 1px 3px rgba(0, 0, 0, .08);
+  --lg-shadow-sm: 0 1px 2px rgba(0, 0, 0, .05);
+  --lg-scrim: rgba(18, 28, 60, .22);
+  --lg-track: rgba(20, 40, 90, .08);
+  --lg-thumb: rgba(255, 255, 255, .92);
+  --lg-knob: #ffffff;
+}
+
+/* 1c. Shape and motion tokens (same in both themes) ------------------------ */
+:root {
+  --lg-r-xl: 28px;
+  --lg-r-lg: 22px;
+  --lg-r-md: 16px;
+  --lg-r-sm: 12px;
+  --lg-r-pill: 999px;
+  --lg-inset: 12px;
+  --lg-spring: cubic-bezier(.34, 1.56, .64, 1);
+  --lg-ease: cubic-bezier(.22, .8, .24, 1);
+  --lg-dur: .42s;
+}
+
+/* 2. Page base and wallpaper ------------------------------------------------ */
+html { background: none; }
+body {
+  font-family: var(--lg-font);
+  background: var(--lg-wall-0);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+/* glass-wallpaper.js swaps this element for a <canvas class="lg-wallpaper lg-wallpaper--gl">. This rule is the picture
+   when WebGL is missing, and the base colour behind the canvas */
+.lg-wallpaper {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--lg-wall-0);
+}
+
+/* 3. Material ------------------------------------------------------------- */
+/* .lg         = control layer (nav, popovers, toasts)
+   .glass      = content panels
+   .glass-lite = many repeated cards and rows
+   All three are the same solid fill, a 1px edge and a hairline shadow. */
+
+/* zero specificity: any layout rule in aero.css (sticky, fixed, absolute) wins */
+:where(.lg, .glass, .glass-lite, .btn, .lg-btn) { position: relative; }
+
+.lg,
+.glass,
+.glass-lite {
+  background-color: var(--lg-solid);
+  background-image: none;
+  box-shadow: var(--lg-shadow);
+}
+.lg { border: 1px solid var(--lg-edge); }
+.glass,
+.glass-lite { border-color: var(--lg-edge); }
+.glass { border-radius: var(--lg-r-lg); }
+.glass-lite { border-radius: var(--lg-r-md); box-shadow: var(--lg-shadow-sm); }
+/* a control inside a panel, and the .lg-strong modifier (the phone toast), sit one step lighter than the panel.
+   The modifier comes after the base rule above, so it wins at the same specificity */
+:is(.lg, .glass, .glass-lite) .lg,
+.lg-strong { background-color: var(--lg-solid-2); }
+
+/* no specular rim on the panels */
+.lg::before,
+.glass::before,
+.glass-lite::before { content: none; }
+
+/* The hover sweep of the glass look (::after) is gone as well. An inert ::after stays on the panels and is never shown:
+   <html data-fx> is always "solid", and the solid look always hid the sweep this way, so the old checks still find it */
+.glass::after,
+.glass-lite::after {
+  content: "";
+  display: none;
+}
+
+/* 4. Buttons -------------------------------------------------------------- */
+:is(.btn, .lg-btn) {
+  --lg-fill: var(--lg-nest);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 7px 14px;
+  border-radius: var(--lg-r-pill);
+  border: 1px solid var(--lg-edge);
+  background-color: var(--lg-fill);
+  background-image: none;
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.1;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .08);
+  transition: transform var(--lg-dur) var(--lg-spring), background-color .18s var(--lg-ease), border-color .18s var(--lg-ease), color .18s var(--lg-ease);
+  -webkit-tap-highlight-color: transparent;
+}
+:is(.btn, .lg-btn):hover { --lg-fill: var(--lg-hover); }
+:is(.btn, .lg-btn):active {
+  --lg-fill: var(--lg-press);
+  transform: scale(.96);
+  transition-duration: .09s, .09s, .09s, .09s;
+}
+:is(.btn, .lg-btn):focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+:is(.btn, .lg-btn):disabled,
+:is(.btn, .lg-btn)[aria-disabled="true"] {
+  opacity: .5;
+  cursor: not-allowed;
+  transform: none;
+}
+:is(.btn, .lg-btn).lg-btn--primary {
+  --lg-fill: var(--accent);
+  color: var(--accent-text, #fff);
+  border-color: color-mix(in srgb, var(--accent) 80%, #000 20%);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .12);
+}
+:is(.btn, .lg-btn).lg-btn--primary:hover { --lg-fill: var(--accent-hover, var(--accent)); }
+:is(.btn, .lg-btn).lg-btn--primary:active { --lg-fill: var(--accent-press, var(--accent)); }
+:is(.btn, .lg-btn).lg-btn--sleep {
+  color: var(--sleep);
+  border-color: color-mix(in srgb, var(--sleep) 45%, transparent);
+}
+:is(.btn, .lg-btn).lg-btn--danger {
+  color: var(--bad);
+  border-color: color-mix(in srgb, var(--bad) 45%, transparent);
+}
+:is(.btn, .lg-btn).lg-btn--icon {
+  width: 34px;
+  min-width: 34px;
+  padding: 0;
+}
+:is(.btn, .lg-btn) svg { width: 16px; height: 16px; flex: none; }
+
+/* 5. Navigation shell (floating, inset from the window edges) -------------- */
+.lg-nav { border-radius: var(--lg-r-xl); }
+body[data-nav="left"] .lg-nav { margin: var(--lg-inset) 0 var(--lg-inset) var(--lg-inset); }
+body[data-nav="right"] .lg-nav { margin: var(--lg-inset) var(--lg-inset) var(--lg-inset) 0; }
+body[data-nav="top"] .lg-nav { margin: var(--lg-inset) var(--lg-inset) 0; border-radius: var(--lg-r-pill); }
+body[data-nav="bottom"] .lg-nav { margin: 0 var(--lg-inset) var(--lg-inset); border-radius: var(--lg-r-pill); }
+body[data-nav-pinned="1"]:is([data-nav="left"], [data-nav="right"]) .lg-nav {
+  top: var(--lg-inset);
+  height: calc(100vh - 2 * var(--lg-inset));
+  height: calc(100dvh - 2 * var(--lg-inset));
+}
+body[data-nav-pinned="1"][data-nav="top"] .lg-nav { top: var(--lg-inset); }
+body[data-nav-pinned="1"][data-nav="bottom"] .lg-nav { bottom: var(--lg-inset); }
+
+/* the bar scrolls when the window is short, but it shows no scrollbar */
+.lg-nav,
+.lg-nav .tabs { scrollbar-width: none; }
+.lg-nav::-webkit-scrollbar,
+.lg-nav .tabs::-webkit-scrollbar { display: none; }
+
+.lg-nav-link {
+  position: relative;
+  border-radius: var(--lg-r-pill);
+  color: var(--text-muted);
+  transition: background-color .25s var(--lg-ease), color .25s var(--lg-ease), transform .25s var(--lg-spring);
+}
+.lg-nav-link:hover { background-color: var(--lg-nest); color: var(--text); }
+.lg-nav-link[aria-current="page"] {
+  color: var(--text);
+  background-color: var(--lg-press);   /* one step above the hover fill, so the active tab stands out on a white bar too */
+  box-shadow: var(--lg-shadow-sm);
+}
+.lg-nav-link[aria-current="page"] svg { color: var(--accent); }
+
+/* 6. Pill (status, counters) ------------------------------------------------ */
+.lg-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 26px;
+  padding: 3px 10px;
+  border-radius: var(--lg-r-pill);
+  background-color: var(--lg-nest);
+  border: 1px solid var(--lg-edge);
+  box-shadow: none;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.lg-pill .lg-dot,
+.lg-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 22%, transparent);
+  flex: none;
+}
+
+/* 7. Segmented control with a sliding thumb (liquid.js moves it) ----------- */
+.lg-seg {
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+  gap: 2px;
+  padding: 3px;
+  border-radius: var(--lg-r-pill);
+  background: var(--lg-track);
+  isolation: isolate;
+}
+.lg-seg::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: 3px;
+  bottom: 3px;
+  left: 0;
+  width: var(--seg-w, 0px);
+  transform: translateX(var(--seg-x, 0px));
+  border-radius: var(--lg-r-pill);
+  background: var(--lg-thumb);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .12);
+  transition: transform .5s var(--lg-spring), width .5s var(--lg-spring), opacity .2s;
+}
+.lg-seg:not([data-lg-ready])::before { opacity: 0; }
+.lg-seg.lg-seg--moving::before { animation: lg-squish .5s var(--lg-ease); }
+@keyframes lg-squish {
+  0% { scale: 1 1; }
+  35% { scale: 1.08 .86; }
+  100% { scale: 1 1; }
+}
+.lg-seg.lg-seg > * {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 0;
+  min-height: 30px;
+  padding: 4px 12px;
+  border: 0;
+  border-radius: var(--lg-r-pill);
+  background: transparent;
+  box-shadow: none;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color .2s var(--lg-ease);
+}
+.lg-seg.lg-seg > *:hover { color: var(--text); }
+.lg-seg.lg-seg > [data-lg-on] { color: var(--text); background: transparent; }
+.lg-seg.lg-seg > *:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+
+/* 8. Switch ------------------------------------------------------------------ */
+.lg-switch {
+  -webkit-appearance: none;
+          appearance: none;
+  position: relative;
+  flex: none;
+  width: 46px;
+  height: 28px;
+  margin: 0;
+  padding: 0;
+  border-radius: var(--lg-r-pill);
+  border: 1px solid var(--lg-edge);
+  background: var(--lg-track);
+  box-shadow: none;
+  cursor: pointer;
+  transition: background-color .25s var(--lg-ease);
+}
+.lg-switch::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--lg-r-pill);
+  background: var(--lg-knob);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .18);
+  transition: transform .45s var(--lg-spring), width .2s var(--lg-ease);
+}
+.lg-switch:is(:checked, [aria-checked="true"], [aria-pressed="true"]) { background-color: var(--good); }
+.lg-switch:is(:checked, [aria-checked="true"], [aria-pressed="true"])::after { transform: translateX(18px); }
+.lg-switch:active::after { width: 28px; }
+.lg-switch:is(:checked, [aria-checked="true"], [aria-pressed="true"]):active::after { transform: translateX(12px); }
+.lg-switch:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+/* 9. Popover (grows out of its button) -------------------------------------- */
+.lg-pop {
+  background-color: var(--lg-solid);
+  border-radius: var(--lg-r-lg);
+  transform-origin: var(--lg-origin, bottom left);
+  transition: opacity .18s var(--lg-ease), transform .32s var(--lg-spring);
+}
+@starting-style {
+  .lg-pop { opacity: 0; transform: scale(.92) translateY(6px); }
+}
+.lg-pop[hidden] { display: none; }
+body[data-nav="right"] .lg-pop { --lg-origin: bottom right; }
+body[data-nav="top"] .lg-pop { --lg-origin: top right; }
+body[data-nav="bottom"] .lg-pop { --lg-origin: bottom right; }
+
+/* 10. Text field ------------------------------------------------------------ */
+.lg-field {
+  min-height: 36px;
+  padding: 8px 14px;
+  border-radius: var(--lg-r-pill);
+  border: 1px solid var(--lg-edge);
+  background: var(--lg-track);
+  color: var(--text);
+  font: inherit;
+  box-shadow: none;
+  transition: border-color .2s var(--lg-ease);
+}
+.lg-field::placeholder { color: var(--text-faint); }
+.lg-field:focus,
+.lg-field:focus-visible {
+  outline: none;
+  border-color: color-mix(in srgb, var(--accent) 60%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus) 40%, transparent);
+}
+
+/* 11. Scroll-edge fade (liquid.js sets data-lg-fade) ------------------------- */
+.lg-fade { --lg-fade: 22px; }
+.lg-fade[data-lg-fade="bottom"] {
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - var(--lg-fade)), transparent);
+          mask-image: linear-gradient(to bottom, #000 calc(100% - var(--lg-fade)), transparent);
+}
+.lg-fade[data-lg-fade="top"] {
+  -webkit-mask-image: linear-gradient(to top, #000 calc(100% - var(--lg-fade)), transparent);
+          mask-image: linear-gradient(to top, #000 calc(100% - var(--lg-fade)), transparent);
+}
+.lg-fade[data-lg-fade="both"] {
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 var(--lg-fade), #000 calc(100% - var(--lg-fade)), transparent);
+          mask-image: linear-gradient(to bottom, transparent, #000 var(--lg-fade), #000 calc(100% - var(--lg-fade)), transparent);
+}
+
+/* 12. Effects: solid is the only look now, plus reduced transparency and more contrast ---
+   nav-boot.js keeps <html data-fx="solid"> so old checks and rules that read it still work; nothing changes it.
+   Reduced motion is the last block of this file (12b): it has to come after the animations to win over them. */
+:root[data-fx="solid"] :is(.lg, .glass, .glass-lite) {
+  -webkit-backdrop-filter: none;
+          backdrop-filter: none;
+}
+@media (prefers-reduced-transparency: reduce) {
+  :root :is(.lg, .glass, .glass-lite) {
+    background-color: var(--lg-solid);
+    background-image: none;
+    -webkit-backdrop-filter: none;
+            backdrop-filter: none;
+  }
+}
+@media (prefers-contrast: more) {
+  :root {
+    --lg-tint: var(--lg-tint-strong);
+    --lg-tint-panel: var(--lg-tint-strong);
+    --lg-edge: color-mix(in srgb, var(--text) 45%, transparent);
+  }
+}
+
+/* 13. Animations - flat but smooth --------------------------------------------
+   Only transform, opacity and colour move: the first two run on the GPU, the third is cheap. Nothing animates size,
+   position, margin, padding or shadow. Reduced motion switches all of it off (12b). */
+
+/* Page-view crossfade: app.js adds .view-enter to the view that was just shown. The fill mode is "backwards", not "both":
+   a finished animation must leave no transform behind, or the view would become the containing block of its fixed children */
+.view-enter { animation: lg-fade-in .28s var(--lg-ease) backwards; }
+@keyframes lg-fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Staggered entrance of panels, cards and rows. The delay is --lg-i x 30 ms: app.js sets --lg-i on the cards and rows (at
+   most 15, so the last one waits 450 ms), and the data-lg-enter="0".."4" panels in the pages take it from the value */
+[data-lg-enter] {
+  animation: lg-enter .32s var(--lg-ease) backwards;
+  animation-delay: calc(var(--lg-i, 0) * 30ms);
+}
+[data-lg-enter="1"] { --lg-i: 1; }
+[data-lg-enter="2"] { --lg-i: 2; }
+[data-lg-enter="3"] { --lg-i: 3; }
+[data-lg-enter="4"] { --lg-i: 4; }
+@keyframes lg-enter {
+  from { opacity: 0; transform: translateY(8px) scale(.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Hover lift: the repeated cards and the three headline tiles of the Overview rise 2 px. Big wrapper panels stay still.
+   Mouse only, so a tap on a phone does not leave a card lifted */
+.glass-lite,
+.ov-hero,
+.ov-chip {
+  transition: transform .22s var(--lg-ease), border-color .22s var(--lg-ease), opacity .22s;
+}
+@media (hover: hover) {
+  .glass-lite:hover,
+  .ov-hero:hover,
+  .ov-chip:hover { transform: translateY(-2px); }
+}
+
+/* Buttons: a 1 px lift on hover, the spring press of section 4 on :active. The tabs have their own slide, below */
+@media (hover: hover) {
+  :is(.btn, .lg-btn, .gel):not(:disabled, [aria-disabled="true"], .lg-nav-link):hover { transform: translateY(-1px); }
+}
+:is(.btn, .lg-btn, .gel):not(:disabled, [aria-disabled="true"], .lg-nav-link):active {
+  transform: translateY(0) scale(.96);
+  transition-duration: .09s;
+}
+.gel:not(.lg-btn, .lg-nav-link) { transition: transform .15s var(--lg-ease), background-color .2s var(--lg-ease), color .2s var(--lg-ease), border-color .2s var(--lg-ease); }
+
+/* Navigation: a tab nudges 3 px toward the page on hover, and the active tab fades in (section 5) */
+@media (hover: hover) {
+  .lg-nav-link:hover:not([aria-current="page"], .on) { transform: translateX(3px); }
+}
+.lg-nav-link:active { transform: translateX(1px) scale(.98); transition-duration: .08s; }
+
+/* Theme switch on a small page: nav-boot.js sets data-theme-transition on <html> for 400 ms around a change of theme, so
+   the colours fade instead of snapping. It is on the page only during that time, never during normal use. The browser
+   animates every element that is drawn, so nav-boot.js uses this only up to 600 of them (the Overview has about 250) */
+html[data-theme-transition] * {
+  /* !important: override per-component transitions during theme switch only */
+  transition: background-color .35s var(--lg-ease), color .35s var(--lg-ease), border-color .35s var(--lg-ease), box-shadow .35s var(--lg-ease) !important;
+}
+
+/* Theme switch on a big page (the account list): nav-boot.js has the browser crossfade a snapshot of the page instead
+   (View Transitions), which costs the same on any page size. Same length and curve as the colour fade. A browser
+   without View Transitions ignores this rule */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: .35s;
+  animation-timing-function: var(--lg-ease);
+}
+
+/* 12b. Reduced motion - keep this block LAST: it has to win over every animation above ------ */
+@media (prefers-reduced-motion: reduce) {
+  :is(.lg, .glass, .glass-lite, .btn, .lg-btn, .gel, .lg-nav-link, .lg-pop, .lg-switch, .lg-seg, .view-enter, [data-lg-enter], .ov-hero, .ov-chip),
+  :is(.lg-seg, .lg-switch)::before,
+  :is(.lg-seg, .lg-switch)::after {
+    transition-duration: .01ms !important;
+    animation: none !important;
+  }
+  /* no lift, no press, no nudge: nothing moves, the colours still change */
+  :is(.glass-lite, .ov-hero, .ov-chip, .btn, .lg-btn, .gel, .lg-nav-link):is(:hover, :active) { transform: none !important; }
+  html[data-theme-transition] * { transition: none !important; }
+  /* glass-wallpaper.js pauses itself under reduced motion before its first frame, which would leave a black canvas.
+     The flat colour of the page shows instead */
+  .lg-wallpaper--gl { display: none; }
+  /* nav-boot.js does not start a View Transition under reduced motion either: this is a second lock. It is a rule of its
+     own, so a browser that does not know the pseudo-elements drops only this rule */
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) { animation: none !important; }
+}

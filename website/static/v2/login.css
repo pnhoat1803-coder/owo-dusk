@@ -1,0 +1,27 @@
+/* Login page on phones: the card fits a 360 px screen, nothing scrolls sideways, and the touch targets are 44 px high.
+   Loaded after aero.css (website/templates/login.html), which keeps the look of the desktop login. */
+.login-page, .login-page * { box-sizing: border-box; }
+.login-page { overflow-x: hidden; }
+.login-page main.login {
+  width: min(420px, calc(100vw - 32px));
+  max-width: calc(100vw - 32px);
+  margin-left: auto;
+  margin-right: auto;
+  padding: 22px 18px;
+  overflow-wrap: anywhere;
+}
+.login-page .login-form input[type="password"],
+.login-page .login-form input[type="text"] {
+  width: 100%;
+  min-height: 44px;
+  font-size: 16px;
+}
+.login-page .input-with-toggle { display: flex; align-items: stretch; gap: 6px; min-width: 0; }
+.login-page .input-with-toggle input { flex: 1 1 auto; min-width: 0; }
+.login-page .pw-toggle-btn { flex: 0 0 auto; min-width: 44px; min-height: 44px; }
+.login-page .submit-btn { width: 100%; min-height: 44px; justify-content: center; }
+.login-page .login-footer { font-size: 12px; text-align: center; }
+@media (max-width: 380px) {
+  .login-page main.login { padding: 18px 14px; }
+  .login-page .login-brand h1 { font-size: 22px; }
+}

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title data-i18n="login.title">OwO-Dusk - Fleet Command Sign in</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27%3E%3Ccircle cx=%2712%27 cy=%2712%27 r=%2710.5%27 fill=%27%233b82f6%27 stroke=%27%231d4ed8%27/%3E%3Cellipse cx=%278.6%27 cy=%277.2%27 rx=%275%27 ry=%273%27 fill=%27white%27 fill-opacity=%27.7%27/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="{{ url_for('static', filename='v2/aero.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='v2/liquid.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='v2/login.css') }}">
+  <script src="{{ url_for('static', filename='v2/i18n.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='v2/login.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='v2/liquid.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='v2/glass-wallpaper.js') }}" defer></script>
+</head>
+<body class="login-page">
+  <!-- Theme and Effects before the first paint, the same as the dashboard (nav-boot.js). Synchronous, first in <body> -->
+  <script src="{{ url_for('static', filename='v2/nav-boot.js') }}"></script>
+  <div class="lg-wallpaper" aria-hidden="true"></div>
+  <main class="login glass obsidian-card lg lg-lens">
+    <div class="login-brand">
+      <svg class="ic xl glow-icon" aria-hidden="true"><use href="/static/v2/icons.svg#i-logo"/></svg>
+      <h1>OwO-Dusk</h1>
+      <p class="muted" data-i18n="login.sub">Fleet Command Center</p>
+    </div>
+    <form method="post" action="/login" class="login-form">
+      <input type="hidden" name="next" value="{{ next }}">
+      <div class="form-group">
+        <label for="pw" class="muted" data-i18n="login.label">Dashboard Password</label>
+        <div class="input-with-toggle">
+          <input id="pw" class="lg-field" name="password" type="password" autocomplete="current-password" placeholder="Enter security passphrase" data-i18n-placeholder="login.placeholder" autofocus required{% if error %} aria-invalid="true" aria-describedby="login-error"{% endif %}>
+          <button type="button" id="toggle-pw" class="pw-toggle-btn" aria-label="Show password" aria-pressed="false" title="Show or hide the password" data-i18n-aria="login.show" data-i18n-title="login.show">
+            <svg class="ic sm" aria-hidden="true"><use href="/static/v2/icons.svg#i-eye"/></svg>
+          </button>
+        </div>
+      </div>
+      {% if error %}
+      <div id="login-error" class="err" role="alert">
+        <svg class="ic sm" aria-hidden="true"><use href="/static/v2/icons.svg#i-error"/></svg>
+        {% if error == "locked" %}<span data-i18n="login.locked">Too many wrong passwords. Wait 5 minutes.</span>{% else %}<span>{{ error }}</span>{% endif %}
+      </div>
+      {% endif %}
+      <button class="gel lg-btn lg-btn--primary submit-btn" type="submit">
+        <svg class="ic" aria-hidden="true"><use href="/static/v2/icons.svg#i-check"/></svg>
+        <span data-i18n="login.submit">Authorize &amp; Enter</span>
+      </button>
+    </form>
+    <div class="login-footer muted">
+      <small data-i18n="login.footer">Local &amp; protected remote access &bull; signed session, 24 hours</small>
+    </div>
+  </main>
+</body>
+</html>
