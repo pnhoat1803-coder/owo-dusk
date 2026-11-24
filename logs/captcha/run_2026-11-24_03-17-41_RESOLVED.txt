@@ -1,0 +1,376 @@
+===== b0bbei | bắt đầu 03:50:39 | kết thúc 03:53:06 | RESOLVED | owo bot confirmed the solve =====
+2026-11-24 03:50:39 | b0bbei | Captcha detected!
+2026-11-24 03:50:39 | b0bbei |  cursor=1574496349628665877
+2026-11-24 03:50:39 | b0bbei | webhook Url seems invalid
+2026-11-24 03:50:39 | b0bbei | Attempting to solve hcaptcha
+2026-11-24 03:50:39 | b0bbei |  provider order=['captchaly', 'yescaptcha']
+2026-11-24 03:51:36 | b0bbei | no OwO reply for 'b' after 60s, skipping
+2026-11-24 03:52:39 | - | provider=captchaly attempt=1/3 variant=standard result=error: HTTP 503 CAPTCHA_UNSOLVABLE
+2026-11-24 03:53:05 | - | provider=captchaly attempt=2/3 variant=standard result=token_received
+2026-11-24 03:53:05 | - | provider=captchaly result=solved
+2026-11-24 03:53:05 | b0bbei |  solve returned provider=captchaly
+2026-11-24 03:53:06 | b0bbei |  DM poll iter=1 since=1574496349628665877 classified=none
+2026-11-24 03:53:06 | b0bbei | Captcha solved! - sleeping 1.8132416383024648s before restart.
+
+===== mallykhongsuy | bắt đầu 05:32:07 | kết thúc 05:32:57 | RESOLVED | owo bot confirmed the solve =====
+2026-11-24 05:32:07 | mallykhongsuy | Captcha detected!
+2026-11-24 05:32:07 | mallykhongsuy |  cursor=1574488873298296934
+2026-11-24 05:32:07 | mallykhongsuy | webhook Url seems invalid
+2026-11-24 05:32:07 | mallykhongsuy | Attempting to solve hcaptcha
+2026-11-24 05:32:07 | mallykhongsuy |  provider order=['captchaly', 'yescaptcha']
+2026-11-24 05:32:56 | - | provider=captchaly attempt=1/5 variant=standard result=token_received
+2026-11-24 05:32:56 | - | provider=captchaly result=solved
+2026-11-24 05:32:56 | mallykhongsuy |  solve returned provider=captchaly
+2026-11-24 05:32:56 | mallykhongsuy |  DM poll iter=1 since=1574488873298296934 classified=none
+2026-11-24 05:32:57 | mallykhongsuy | Captcha solved! - sleeping 1.0571669927163465s before restart.
+
+===== s1renx.21 | bắt đầu 05:32:34 | kết thúc 05:33:09 | RESOLVED | owo bot confirmed the solve =====
+2026-11-24 05:32:34 | s1renx.21 | Captcha detected!
+2026-11-24 05:32:34 | s1renx.21 |  cursor=1574504287957024853
+2026-11-24 05:32:34 | s1renx.21 | webhook Url seems invalid
+2026-11-24 05:32:34 | s1renx.21 | Attempting to solve hcaptcha
+2026-11-24 05:32:34 | s1renx.21 |  provider order=['captchaly', 'yescaptcha']
+2026-11-24 05:33:08 | - | provider=captchaly attempt=1/3 variant=standard result=token_received
+2026-11-24 05:33:08 | - | provider=captchaly result=solved
+2026-11-24 05:33:08 | s1renx.21 |  solve returned provider=captchaly
+2026-11-24 05:33:09 | s1renx.21 | Captcha solved! - sleeping 1.7832251322661223s before restart.
+
+===== mallykhongsuy | bắt đầu 05:33:24 | kết thúc 05:33:51 | RESOLVED | owo bot confirmed the solve =====
+2026-11-24 05:33:24 | mallykhongsuy | Captcha detected!
+2026-11-24 05:33:24 | mallykhongsuy |  cursor=1574553372793774171
+2026-11-24 05:33:24 | mallykhongsuy | webhook Url seems invalid
+2026-11-24 05:33:24 | mallykhongsuy | Attempting to solve hcaptcha
+2026-11-24 05:33:24 | mallykhongsuy |  provider order=['captchaly', 'yescaptcha']
+2026-11-24 05:33:25 | - | Using cached OAuth session!
+2026-11-24 05:33:49 | - | provider=captchaly attempt=1/4 variant=standard result=token_received
+2026-11-24 05:33:49 | - | provider=captchaly result=solved
+2026-11-24 05:33:49 | mallykhongsuy |  solve returned provider=captchaly
+2026-11-24 05:33:50 | mallykhongsuy |  DM poll iter=1 since=1574553372793774171 classified=none
+2026-11-24 05:33:51 | mallykhongsuy | Captcha solved! - sleeping 1.9897400616402552s before restart.
+
+===== s1renx.21 | bắt đầu 05:33:32 | kết thúc 05:54:18 | RESOLVED | owo bot confirmed the solve =====
+2026-11-24 05:33:32 | s1renx.21 | Captcha detected!
+2026-11-24 05:33:32 | s1renx.21 |  cursor=1574553422894465136
+2026-11-24 05:33:32 | s1renx.21 | webhook Url seems invalid
+2026-11-24 05:33:32 | s1renx.21 | Attempting to solve hcaptcha
+2026-11-24 05:33:32 | s1renx.21 |  provider order=['captchaly', 'yescaptcha']
+2026-11-24 05:33:32 | - | Using cached OAuth session!
+2026-11-24 05:33:34 | s1renx.21 | no OwO reply for 'h' after 60s, skipping
+2026-11-24 05:33:55 | - | provider=captchaly attempt=1/4 variant=standard result=token_received
+2026-11-24 05:33:55 | - | provider=captchaly result=solved
+2026-11-24 05:33:55 | s1renx.21 |  solve returned provider=captchaly
+2026-11-24 05:33:56 | s1renx.21 |  episode total_s=24 outcome=success
+2026-11-24 05:33:56 | s1renx.21 |  state transition field=status.captcha old=True new=False
+2026-11-24 05:33:56 | s1renx.21 |  DM confirmed solved
+2026-11-24 05:33:56 | s1renx.21 | Ran: owoh
+2026-11-24 05:34:17 | s1renx.21 | Ran: owoh
+2026-11-24 05:34:32 | s1renx.21 | no OwO reply for 'b' after 60s, skipping
+2026-11-24 05:34:36 | s1renx.21 | Ran: Có ai bay 10 nghìn km sang đây chỉ để post 1 cái ảnh photoshop không? Bạn có vấn đề gì về tư duy không?
+2026-11-24 05:34:41 | s1renx.21 | Ran: owoh
+2026-11-24 05:34:54 | s1renx.21 | Ran: owob
+2026-11-24 05:34:54 | s1renx.21 | You won in 6 turns!  |  +200 xp  |  Streak: 18,706
+2026-11-24 05:35:05 | s1renx.21 | Ran: owoh
+2026-11-24 05:35:15 | s1renx.21 | Ran: owob
+2026-11-24 05:35:15 | s1renx.21 | You won in 4 turns!  |  +200 xp  |  Streak: 18,707
+2026-11-24 05:35:28 | s1renx.21 | Ran: owoh
+2026-11-24 05:35:38 | s1renx.21 | Ran: owob
+2026-11-24 05:35:38 | s1renx.21 | You won in 5 turns!  |  +200 xp  |  Streak: 18,708
+2026-11-24 05:35:51 | s1renx.21 | Ran: owoh
+2026-11-24 05:35:56 | s1renx.21 | Ran: Tiền ít thì mình mua cái ít tiền, đâu nhất thiết phải như anh...
+2026-11-24 05:36:02 | s1renx.21 | Ran: owob
+2026-11-24 05:36:02 | s1renx.21 | You won in 1 turns!  |  +200 xp  |  Streak: 18,709
+2026-11-24 05:36:14 | s1renx.21 | Ran: owoh
+2026-11-24 05:36:24 | s1renx.21 | Ran: owob
+2026-11-24 05:36:25 | s1renx.21 | You won in 3 turns!  |  +2,068 xp  |  Streak: 18,710
+2026-11-24 05:36:37 | s1renx.21 | Ran: owoh
+2026-11-24 05:36:48 | s1renx.21 | Ran: owob
+2026-11-24 05:36:48 | s1renx.21 | You won in 2 turns!  |  +200 xp  |  Streak: 18,711
+2026-11-24 05:37:00 | s1renx.21 | Ran: owoh
+2026-11-24 05:37:10 | s1renx.21 | Ran: owob
+2026-11-24 05:37:11 | s1renx.21 | You won in 4 turns!  |  +200 xp  |  Streak: 18,712
+2026-11-24 05:37:17 | s1renx.21 | Ran: Chuẩn, hoàn toàn chuẩn! Nhưng mình .. nhưng bạn đã bị block vì bạn không tôn trọng mình!
+2026-11-24 05:37:22 | s1renx.21 | Ran: owoh
+2026-11-24 05:37:33 | s1renx.21 | Ran: owob
+2026-11-24 05:37:34 | s1renx.21 | You won in 3 turns!  |  +200 xp  |  Streak: 18,713
+2026-11-24 05:37:44 | s1renx.21 | Ran: owoh
+2026-11-24 05:37:56 | s1renx.21 | Ran: owob
+2026-11-24 05:37:56 | s1renx.21 | You won in 2 turns!  |  +200 xp  |  Streak: 18,714
+2026-11-24 05:38:06 | s1renx.21 | Ran: owoh
+2026-11-24 05:38:18 | s1renx.21 | Ran: owob
+2026-11-24 05:38:18 | s1renx.21 | You won in 3 turns!  |  +200 xp  |  Streak: 18,715
+2026-11-24 05:38:28 | s1renx.21 | Ran: owoh
+2026-11-24 05:38:38 | s1renx.21 | Ran: 4 tiếng trước thì như thế, nhưng bây giờ khác rồi
+2026-11-24 05:38:43 | s1renx.21 | Ran: owob
+2026-11-24 05:38:44 | s1renx.21 | You won in 3 turns!  |  +200 xp  |  Streak: 18,716
+2026-11-24 05:38:48 | s1renx.21 | Ran: owoh
+2026-11-24 05:39:05 | s1renx.21 | Ran: owob
+2026-11-24 05:39:05 | s1renx.21 | You won in 3 turns!  |  +200 xp  |  Streak: 18,717
+2026-11-24 05:39:10 | s1renx.21 | Ran: owoh
+2026-11-24 05:39:28 | s1renx.21 | Ran: owob
+2026-11-24 05:39:29 | s1renx.21 | You won in 3 turns!  |  +200 xp  |  Streak: 18,718
+2026-11-24 05:39:33 | s1renx.21 | Ran: owoh
+2026-11-24 05:39:51 | s1renx.21 | Ran: owob
+2026-11-24 05:39:52 | s1renx.21 | It's a tie in 24 turns!  |  +100 xp  |  Streak: 18,718
+2026-11-24 05:39:56 | s1renx.21 | Ran: Điều đó quan trọng với em lắm sao?
+2026-11-24 05:40:00 | s1renx.21 | Ran: owoh
+2026-11-24 05:40:14 | s1renx.21 | Ran: owob
+2026-11-24 05:40:14 | s1renx.21 | You won in 3 turns!  |  +200 xp  |  Streak: 18,719
+2026-11-24 05:40:21 | s1renx.21 | Ran: owoh
+2026-11-24 05:40:35 | s1renx.21 | Ran: owob
+2026-11-24 05:40:36 | s1renx.21 | You won in 4 turns!  |  +2,068 xp  |  Streak: 18,720
+2026-11-24 05:40:44 | s1renx.21 | Ran: owoh
+2026-11-24 05:40:59 | s1renx.21 | Ran: owob
+2026-11-24 05:40:59 | s1renx.21 | You won in 4 turns!  |  +200 xp  |  Streak: 18,721
+2026-11-24 05:41:11 | s1renx.21 | Ran: owoh
+2026-11-24 05:41:20 | s1renx.21 | Ran: owob
+2026-11-24 05:41:21 | s1renx.21 | You won in 3 turns!  |  +200 xp  |  Streak: 18,722
+2026-11-24 05:41:25 | s1renx.21 | Ran: Mọi việc không như em nghĩ đâu
+2026-11-24 05:41:34 | s1renx.21 | Ran: owoh
+2026-11-24 05:41:42 | s1renx.21 | Ran: owob
+2026-11-24 05:41:43 | s1renx.21 | You won in 4 turns!  |  +200 xp  |  Streak: 18,723
+2026-11-24 05:41:56 | s1renx.21 | Ran: owoh
+2026-11-24 05:42:04 | s1renx.21 | Ran: owob
+2026-11-24 05:42:05 | s1renx.21 | You won in 5 turns!  |  +200 xp  |  Streak: 18,724
+2026-11-24 05:42:18 | s1renx.21 | Ran: owoh
+2026-11-24 05:42:26 | s1renx.21 | Ran: owob
+2026-11-24 05:42:27 | s1renx.21 | You won in 3 turns!  |  +200 xp  |  Streak: 18,725
+2026-11-24 05:42:33 | s1renx.21 | Ran: Xin chào, có phải là anh đang tìm kiếm em không?
+2026-11-24 05:42:41 | s1renx.21 | Ran: owoh
+2026-11-24 05:42:48 | s1renx.21 | Ran: owob
+2026-11-24 05:42:48 | s1renx.21 | You won in 4 turns!  |  +200 xp  |  Streak: 18,726
+2026-11-24 05:43:04 | s1renx.21 | Ran: owoh
+2026-11-24 05:43:11 | s1renx.21 | Ran: owob
+2026-11-24 05:43:12 | s1renx.21 | You won in 5 turns!  |  +200 xp  |  Streak: 18,727
+2026-11-24 05:43:28 | s1renx.21 | Ran: owoh
+2026-11-24 05:43:34 | s1renx.21 | Ran: owob
+2026-11-24 05:43:34 | s1renx.21 | You won in 3 turns!  |  +200 xp  |  Streak: 18,728
+2026-11-24 05:43:48 | s1renx.21 | Ran: Bạn viết tâm thư lên Liên hợp quốc nhé. Chắc là họ lắng nghe bạn đấy.
+2026-11-24 05:43:51 | s1renx.21 | Ran: owoh
+2026-11-24 05:43:56 | s1renx.21 | Ran: owob
+2026-11-24 05:43:56 | s1renx.21 | You won in 2 turns!  |  +200 xp  |  Streak: 18,729
+2026-11-24 05:44:15 | s1renx.21 | Ran: owoh
+2026-11-24 05:44:20 | s1renx.21 | Ran: owob
+2026-11-24 05:44:21 | s1renx.21 | You won in 3 turns!  |  +2,069 xp  |  Streak: 18,730
+2026-11-24 05:44:38 | s1renx.21 | Ran: owoh
+2026-11-24 05:44:44 | s1renx.21 | Ran: owob
+2026-11-24 05:44:44 | s1renx.21 | You won in 3 turns!  |  +200 xp  |  Streak: 18,731
+2026-11-24 05:44:52 | s1renx.21 | Ran: May quá, con anh không biết cậu Sơn Tùng kia là ai
+2026-11-24 05:45:00 | s1renx.21 | Ran: owoh
+2026-11-24 05:45:08 | s1renx.21 | Ran: owob
+2026-11-24 05:45:08 | s1renx.21 | You won in 3 turns!  |  +200 xp  |  Streak: 18,732
+2026-11-24 05:45:22 | s1renx.21 | Ran: owoh
+2026-11-24 05:45:32 | s1renx.21 | Ran: owob
+2026-11-24 05:45:32 | s1renx.21 | You won in 1 turns!  |  +200 xp  |  Streak: 18,733
+2026-11-24 05:45:44 | s1renx.21 | Ran: owoh
+2026-11-24 05:45:48 | s1renx.21 | Ran: owouse 056
+2026-11-24 05:45:48 | s1renx.21 | s1renx.21: used gems: 056
+2026-11-24 05:45:54 | s1renx.21 | Ran: owob
+2026-11-24 05:45:55 | s1renx.21 | You won in 3 turns!  |  +200 xp  |  Streak: 18,734
+2026-11-24 05:46:00 | s1renx.21 | Ran: Nhà anh, anh thích thì anh khoe, có quy định nào cấm khoe không em?
+2026-11-24 05:46:06 | s1renx.21 | Ran: owoh
+2026-11-24 05:46:16 | s1renx.21 | Ran: owob
+2026-11-24 05:46:16 | s1renx.21 | You won in 3 turns!  |  +200 xp  |  Streak: 18,735
+2026-11-24 05:46:28 | s1renx.21 | Ran: owoh
+2026-11-24 05:46:39 | s1renx.21 | Ran: owob
+2026-11-24 05:46:43 | s1renx.21 | You won in 3 turns!  |  +200 xp  |  Streak: 18,736
+2026-11-24 05:46:49 | s1renx.21 | Ran: owoh
+2026-11-24 05:47:05 | s1renx.21 | Ran: owob
+2026-11-24 05:47:06 | s1renx.21 | You won in 3 turns!  |  +200 xp  |  Streak: 18,737
+2026-11-24 05:47:10 | s1renx.21 | Ran: owoh
+2026-11-24 05:47:17 | s1renx.21 | Ran: Anh biết, nhưng như thế là quá ít
+2026-11-24 05:47:30 | s1renx.21 | Ran: owob
+2026-11-24 05:47:30 | s1renx.21 | You won in 3 turns!  |  +200 xp  |  Streak: 18,738
+2026-11-24 05:47:35 | s1renx.21 | Ran: owoh
+2026-11-24 05:47:52 | s1renx.21 | Ran: owob
+2026-11-24 05:47:52 | s1renx.21 | You won in 1 turns!  |  +200 xp  |  Streak: 18,739
+2026-11-24 05:47:59 | s1renx.21 | Ran: owoh
+2026-11-24 05:48:14 | s1renx.21 | Ran: owob
+2026-11-24 05:48:15 | s1renx.21 | You won in 4 turns!  |  +2,069 xp  |  Streak: 18,740
+2026-11-24 05:48:22 | s1renx.21 | Ran: owoh
+2026-11-24 05:48:37 | s1renx.21 | Ran: owob
+2026-11-24 05:48:37 | s1renx.21 | You won in 3 turns!  |  +200 xp  |  Streak: 18,741
+2026-11-24 05:48:42 | s1renx.21 | Ran: Chém gió tí cho vui mà em
+2026-11-24 05:48:47 | s1renx.21 | Ran: owoh
+2026-11-24 05:49:00 | s1renx.21 | Ran: owob
+2026-11-24 05:49:01 | s1renx.21 | You won in 4 turns!  |  +200 xp  |  Streak: 18,742
+2026-11-24 05:49:09 | s1renx.21 | Ran: owoh
+2026-11-24 05:49:22 | s1renx.21 | Ran: owob
+2026-11-24 05:49:22 | s1renx.21 | You won in 3 turns!  |  +200 xp  |  Streak: 18,743
+2026-11-24 05:49:32 | s1renx.21 | Ran: owoh
+2026-11-24 05:49:45 | s1renx.21 | Ran: owob
+2026-11-24 05:49:45 | s1renx.21 | You won in 1 turns!  |  +200 xp  |  Streak: 18,744
+2026-11-24 05:49:55 | s1renx.21 | Ran: owoh
+2026-11-24 05:50:07 | s1renx.21 | Ran: owob
+2026-11-24 05:50:07 | s1renx.21 | You won in 4 turns!  |  +200 xp  |  Streak: 18,745
+2026-11-24 05:50:12 | s1renx.21 | Ran: Nick ảo ơi, chào bạn. Người thông minh và tử tế, ai lại dùng nick nặc danh thế...
+2026-11-24 05:50:16 | s1renx.21 | Ran: owoh
+2026-11-24 05:50:29 | s1renx.21 | Ran: owob
+2026-11-24 05:50:30 | s1renx.21 | You won in 3 turns!  |  +200 xp  |  Streak: 18,746
+2026-11-24 05:50:37 | s1renx.21 | Ran: owoh
+2026-11-24 05:50:52 | s1renx.21 | Ran: owob
+2026-11-24 05:50:52 | s1renx.21 | You won in 12 turns!  |  +200 xp  |  Streak: 18,747
+2026-11-24 05:51:00 | s1renx.21 | Ran: owoh
+2026-11-24 05:51:13 | s1renx.21 | Ran: owob
+2026-11-24 05:51:13 | s1renx.21 | You won in 3 turns!  |  +200 xp  |  Streak: 18,748
+2026-11-24 05:51:17 | s1renx.21 | Ran: Kịch bản ấy đẹp, nhưng khó xảy ra
+2026-11-24 05:51:24 | s1renx.21 | Ran: owoh
+2026-11-24 05:51:36 | s1renx.21 | Ran: owob
+2026-11-24 05:51:36 | s1renx.21 | You won in 4 turns!  |  +200 xp  |  Streak: 18,749
+2026-11-24 05:51:47 | s1renx.21 | Ran: owoh
+2026-11-24 05:51:58 | s1renx.21 | Ran: owob
+2026-11-24 05:51:59 | s1renx.21 | You won in 3 turns!  |  +5,808 xp  |  Streak: 18,750
+2026-11-24 05:52:10 | s1renx.21 | Ran: owoh
+2026-11-24 05:52:19 | s1renx.21 | Ran: owob
+2026-11-24 05:52:20 | s1renx.21 | You won in 4 turns!  |  +200 xp  |  Streak: 18,751
+2026-11-24 05:52:31 | s1renx.21 | Ran: Có ai bay 10 nghìn km sang đây chỉ để post 1 cái ảnh photoshop không? Bạn có vấn đề gì về tư duy không?
+2026-11-24 05:52:36 | s1renx.21 | Ran: owoh
+2026-11-24 05:52:41 | s1renx.21 | Ran: owob
+2026-11-24 05:52:42 | s1renx.21 | You won in 4 turns!  |  +200 xp  |  Streak: 18,752
+2026-11-24 05:52:57 | s1renx.21 | Ran: owoh
+2026-11-24 05:53:05 | s1renx.21 | Ran: owob
+2026-11-24 05:53:05 | s1renx.21 | You won in 3 turns!  |  +200 xp  |  Streak: 18,753
+2026-11-24 05:53:21 | s1renx.21 | Ran: owoh
+2026-11-24 05:53:28 | s1renx.21 | Ran: owob
+2026-11-24 05:53:28 | s1renx.21 | You won in 3 turns!  |  +200 xp  |  Streak: 18,754
+2026-11-24 05:53:44 | s1renx.21 | Ran: owoh
+2026-11-24 05:53:44 | s1renx.21 | Captcha detected!
+2026-11-24 05:53:44 | s1renx.21 |  cursor=1574553620513427508
+2026-11-24 05:53:44 | s1renx.21 | webhook Url seems invalid
+2026-11-24 05:53:44 | s1renx.21 | Attempting to solve hcaptcha
+2026-11-24 05:53:44 | s1renx.21 |  provider order=['captchaly', 'yescaptcha']
+2026-11-24 05:53:46 | - | Using cached OAuth session!
+2026-11-24 05:54:17 | - | provider=captchaly attempt=1/4 variant=standard result=token_received
+2026-11-24 05:54:17 | - | provider=captchaly result=solved
+2026-11-24 05:54:17 | s1renx.21 |  solve returned provider=captchaly
+2026-11-24 05:54:18 | s1renx.21 |  DM poll iter=1 since=1574553620513427508 classified=none
+2026-11-24 05:54:18 | s1renx.21 | Captcha solved! - sleeping 1.1745810085332007s before restart.
+
+===== b0bbei | bắt đầu 05:55:38 | kết thúc 05:56:04 | RESOLVED | owo bot confirmed the solve =====
+2026-11-24 05:55:38 | b0bbei | Captcha detected!
+2026-11-24 05:55:38 | b0bbei |  cursor=1574528243720134737
+2026-11-24 05:55:38 | b0bbei | webhook Url seems invalid
+2026-11-24 05:55:38 | b0bbei | Attempting to solve hcaptcha
+2026-11-24 05:55:38 | b0bbei |  provider order=['captchaly', 'yescaptcha']
+2026-11-24 05:55:39 | - | Using cached OAuth session!
+2026-11-24 05:56:03 | - | provider=captchaly attempt=1/3 variant=standard result=token_received
+2026-11-24 05:56:03 | - | provider=captchaly result=solved
+2026-11-24 05:56:03 | b0bbei |  solve returned provider=captchaly
+2026-11-24 05:56:04 | b0bbei |  DM poll iter=1 since=1574528243720134737 classified=none
+2026-11-24 05:56:04 | b0bbei | Captcha solved! - sleeping 1.833115173179964s before restart.
+
+===== mallykhongsuy | bắt đầu 05:56:43 | kết thúc 05:57:13 | RESOLVED | owo bot confirmed the solve =====
+2026-11-24 05:56:43 | mallykhongsuy | Captcha detected!
+2026-11-24 05:56:43 | mallykhongsuy |  cursor=1574553601471152189
+2026-11-24 05:56:43 | mallykhongsuy | webhook Url seems invalid
+2026-11-24 05:56:43 | mallykhongsuy | Attempting to solve hcaptcha
+2026-11-24 05:56:43 | mallykhongsuy |  provider order=['captchaly', 'yescaptcha']
+2026-11-24 05:56:43 | - | Using cached OAuth session!
+2026-11-24 05:57:12 | - | provider=captchaly attempt=1/4 variant=standard result=token_received
+2026-11-24 05:57:12 | - | provider=captchaly result=solved
+2026-11-24 05:57:12 | mallykhongsuy |  solve returned provider=captchaly
+2026-11-24 05:57:13 | mallykhongsuy |  DM poll iter=1 since=1574553601471152189 classified=none
+2026-11-24 05:57:13 | mallykhongsuy | Captcha solved! - sleeping 1.2494747532778137s before restart.
+
+===== b0bbei | bắt đầu 06:09:15 | kết thúc 06:09:30 | RESOLVED | owo bot confirmed the solve =====
+2026-11-24 06:09:15 | b0bbei | Captcha detected!
+2026-11-24 06:09:15 | b0bbei |  cursor=1574559189785645249
+2026-11-24 06:09:15 | b0bbei | webhook Url seems invalid
+2026-11-24 06:09:15 | b0bbei | Attempting to solve hcaptcha
+2026-11-24 06:09:15 | b0bbei |  provider order=['captchaly', 'yescaptcha']
+2026-11-24 06:09:16 | - | Using cached OAuth session!
+2026-11-24 06:09:29 | - | provider=captchaly attempt=1/4 variant=standard result=token_received
+2026-11-24 06:09:29 | - | provider=captchaly result=solved
+2026-11-24 06:09:29 | b0bbei |  solve returned provider=captchaly
+2026-11-24 06:09:30 | b0bbei |  DM poll iter=1 since=1574559189785645249 classified=none
+2026-11-24 06:09:30 | b0bbei | Captcha solved! - sleeping 1.9448239934435314s before restart.
+
+===== b0bbei | bắt đầu 06:11:32 | kết thúc 06:11:46 | RESOLVED | owo bot confirmed the solve =====
+2026-11-24 06:11:32 | b0bbei | Captcha detected!
+2026-11-24 06:11:32 | b0bbei |  cursor=1574562571678257256
+2026-11-24 06:11:32 | b0bbei | webhook Url seems invalid
+2026-11-24 06:11:32 | b0bbei | Attempting to solve hcaptcha
+2026-11-24 06:11:32 | b0bbei |  provider order=['captchaly', 'yescaptcha']
+2026-11-24 06:11:33 | - | Using cached OAuth session!
+2026-11-24 06:11:46 | - | provider=captchaly attempt=1/3 variant=standard result=token_received
+2026-11-24 06:11:46 | - | provider=captchaly result=solved
+2026-11-24 06:11:46 | b0bbei |  solve returned provider=captchaly
+2026-11-24 06:11:46 | b0bbei |  DM poll iter=1 since=1574562571678257256 classified=none
+2026-11-24 06:11:46 | b0bbei | Captcha solved! - sleeping 1.2065315474319027s before restart.
+
+===== s1renx.21 | bắt đầu 06:49:10 | kết thúc 06:49:23 | RESOLVED | owo bot confirmed the solve =====
+2026-11-24 06:49:10 | s1renx.21 | Captcha detected!
+2026-11-24 06:49:10 | s1renx.21 |  cursor=1574558746615484421
+2026-11-24 06:49:10 | s1renx.21 | webhook Url seems invalid
+2026-11-24 06:49:10 | s1renx.21 | Attempting to solve hcaptcha
+2026-11-24 06:49:10 | s1renx.21 |  provider order=['captchaly', 'yescaptcha']
+2026-11-24 06:49:11 | - | Using cached OAuth session!
+2026-11-24 06:49:22 | - | provider=captchaly attempt=1/4 variant=standard result=token_received
+2026-11-24 06:49:22 | - | provider=captchaly result=solved
+2026-11-24 06:49:22 | s1renx.21 |  solve returned provider=captchaly
+2026-11-24 06:49:23 | s1renx.21 |  DM poll iter=1 since=1574558746615484421 classified=none
+2026-11-24 06:49:23 | s1renx.21 | Captcha solved! - sleeping 1.3035840706186108s before restart.
+
+===== mallykhongsuy | bắt đầu 07:59:37 | kết thúc 07:59:51 | RESOLVED | owo bot confirmed the solve =====
+2026-11-24 07:59:37 | mallykhongsuy | Captcha detected!
+2026-11-24 07:59:37 | mallykhongsuy |  cursor=1574559479490674739
+2026-11-24 07:59:37 | mallykhongsuy | webhook Url seems invalid
+2026-11-24 07:59:37 | mallykhongsuy | Attempting to solve hcaptcha
+2026-11-24 07:59:37 | mallykhongsuy |  provider order=['captchaly', 'yescaptcha']
+2026-11-24 07:59:38 | - | Using cached OAuth session!
+2026-11-24 07:59:50 | - | provider=captchaly attempt=1/4 variant=standard result=token_received
+2026-11-24 07:59:50 | - | provider=captchaly result=solved
+2026-11-24 07:59:50 | mallykhongsuy |  solve returned provider=captchaly
+2026-11-24 07:59:50 | mallykhongsuy |  DM poll iter=1 since=1574559479490674739 classified=none
+2026-11-24 07:59:51 | mallykhongsuy | Captcha solved! - sleeping 1.8472308063730662s before restart.
+
+===== s1renx.21 | bắt đầu 08:32:50 | kết thúc 08:33:26 | RESOLVED | owo bot confirmed the solve =====
+2026-11-24 08:32:50 | s1renx.21 | Captcha detected!
+2026-11-24 08:32:50 | s1renx.21 |  cursor=1574572608555319416
+2026-11-24 08:32:50 | s1renx.21 | webhook Url seems invalid
+2026-11-24 08:32:50 | s1renx.21 | Attempting to solve hcaptcha
+2026-11-24 08:32:50 | s1renx.21 |  provider order=['captchaly', 'yescaptcha']
+2026-11-24 08:32:50 | - | Using cached OAuth session!
+2026-11-24 08:33:25 | - | provider=captchaly attempt=1/5 variant=standard result=token_received
+2026-11-24 08:33:25 | - | provider=captchaly result=solved
+2026-11-24 08:33:25 | s1renx.21 |  solve returned provider=captchaly
+2026-11-24 08:33:26 | s1renx.21 |  DM poll iter=1 since=1574572608555319416 classified=none
+2026-11-24 08:33:26 | s1renx.21 | Captcha solved! - sleeping 1.9684994479745528s before restart.
+
+===== mallykhongsuy | bắt đầu 08:33:59 | kết thúc 08:34:34 | RESOLVED | owo bot confirmed the solve =====
+2026-11-24 08:33:59 | mallykhongsuy | Captcha detected!
+2026-11-24 08:33:59 | mallykhongsuy |  cursor=1574590336410325023
+2026-11-24 08:33:59 | mallykhongsuy | webhook Url seems invalid
+2026-11-24 08:33:59 | mallykhongsuy | Attempting to solve hcaptcha
+2026-11-24 08:33:59 | mallykhongsuy |  provider order=['captchaly', 'yescaptcha']
+2026-11-24 08:34:00 | - | Using cached OAuth session!
+2026-11-24 08:34:33 | - | provider=captchaly attempt=1/3 variant=standard result=token_received
+2026-11-24 08:34:33 | - | provider=captchaly result=solved
+2026-11-24 08:34:33 | mallykhongsuy |  solve returned provider=captchaly
+2026-11-24 08:34:34 | mallykhongsuy |  DM poll iter=1 since=1574590336410325023 classified=none
+2026-11-24 08:34:34 | mallykhongsuy | Captcha solved! - sleeping 1.2138395259331425s before restart.
+
+===== b0bbei | bắt đầu 08:34:31 | kết thúc 08:34:45 | RESOLVED | owo bot confirmed the solve =====
+2026-11-24 08:34:31 | b0bbei | Captcha detected!
+2026-11-24 08:34:31 | b0bbei |  cursor=1574563144766853131
+2026-11-24 08:34:31 | b0bbei | webhook Url seems invalid
+2026-11-24 08:34:31 | b0bbei | Attempting to solve hcaptcha
+2026-11-24 08:34:31 | b0bbei |  provider order=['captchaly', 'yescaptcha']
+2026-11-24 08:34:32 | - | Using cached OAuth session!
+2026-11-24 08:34:44 | - | provider=captchaly attempt=1/4 variant=standard result=token_received
+2026-11-24 08:34:44 | - | provider=captchaly result=solved
+2026-11-24 08:34:44 | b0bbei |  solve returned provider=captchaly
+2026-11-24 08:34:44 | b0bbei |  DM poll iter=1 since=1574563144766853131 classified=none
+2026-11-24 08:34:45 | b0bbei | Captcha solved! - sleeping 1.2800370835183017s before restart.
+
+===== b0bbei | bắt đầu 08:44:42 | kết thúc 08:44:55 | RESOLVED | owo bot confirmed the solve =====
+2026-11-24 08:44:42 | b0bbei | Captcha detected!
+2026-11-24 08:44:42 | b0bbei |  cursor=1574599120948039811
+2026-11-24 08:44:42 | b0bbei | webhook Url seems invalid
+2026-11-24 08:44:42 | b0bbei | Attempting to solve hcaptcha
+2026-11-24 08:44:42 | b0bbei |  provider order=['captchaly', 'yescaptcha']
+2026-11-24 08:44:43 | - | Using cached OAuth session!
+2026-11-24 08:44:55 | - | provider=captchaly attempt=1/5 variant=standard result=token_received
+2026-11-24 08:44:55 | - | provider=captchaly result=solved
+2026-11-24 08:44:55 | b0bbei |  solve returned provider=captchaly
+2026-11-24 08:44:55 | b0bbei | Captcha solved! - sleeping 1.6720105178302709s before restart.
+

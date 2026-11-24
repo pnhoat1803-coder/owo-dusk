@@ -1,0 +1,123 @@
+===== mallykhongsuy | bắt đầu 10:03:35 | kết thúc 10:03:55 | RESOLVED | owo bot confirmed the solve =====
+2026-11-24 10:03:35 | mallykhongsuy | Captcha detected!
+2026-11-24 10:03:35 | mallykhongsuy |  cursor=1574616157183283262
+2026-11-24 10:03:35 | mallykhongsuy | webhook Url seems invalid
+2026-11-24 10:03:35 | mallykhongsuy | Attempting to solve hcaptcha
+2026-11-24 10:03:35 | mallykhongsuy |  provider order=['captchaly', 'yescaptcha']
+2026-11-24 10:03:55 | - | provider=captchaly attempt=1/5 variant=standard result=token_received
+2026-11-24 10:03:55 | - | provider=captchaly result=solved
+2026-11-24 10:03:55 | mallykhongsuy |  solve returned provider=captchaly
+2026-11-24 10:03:55 | mallykhongsuy |  DM poll iter=1 since=1574616157183283262 classified=none
+2026-11-24 10:03:55 | mallykhongsuy | Captcha solved! - sleeping 1.991530120779749s before restart.
+
+===== s1renx.21 | bắt đầu 10:03:53 | kết thúc 10:04:20 | RESOLVED | owo bot confirmed the solve =====
+2026-11-24 10:03:53 | s1renx.21 | Captcha detected!
+2026-11-24 10:03:53 | s1renx.21 |  cursor=1574615486807670895
+2026-11-24 10:03:53 | s1renx.21 | webhook Url seems invalid
+2026-11-24 10:03:53 | s1renx.21 | Attempting to solve hcaptcha
+2026-11-24 10:03:53 | s1renx.21 |  provider order=['captchaly', 'yescaptcha']
+2026-11-24 10:04:20 | - | provider=captchaly attempt=1/5 variant=standard result=token_received
+2026-11-24 10:04:20 | - | provider=captchaly result=solved
+2026-11-24 10:04:20 | s1renx.21 |  solve returned provider=captchaly
+2026-11-24 10:04:20 | s1renx.21 | Captcha solved! - sleeping 1.9265836971931838s before restart.
+
+===== mallykhongsuy | bắt đầu 10:19:09 | kết thúc 10:20:00 | RESOLVED | owo bot confirmed the solve =====
+2026-11-24 10:19:09 | mallykhongsuy | Captcha detected!
+2026-11-24 10:19:09 | mallykhongsuy |  cursor=1574621563972751361
+2026-11-24 10:19:09 | mallykhongsuy | webhook Url seems invalid
+2026-11-24 10:19:09 | mallykhongsuy | Attempting to solve hcaptcha
+2026-11-24 10:19:09 | mallykhongsuy |  provider order=['captchaly', 'yescaptcha']
+2026-11-24 10:19:09 | - | Using cached OAuth session!
+2026-11-24 10:19:59 | - | provider=captchaly attempt=1/4 variant=standard result=token_received
+2026-11-24 10:19:59 | - | provider=captchaly result=solved
+2026-11-24 10:19:59 | mallykhongsuy |  solve returned provider=captchaly
+2026-11-24 10:19:59 | mallykhongsuy |  DM poll iter=1 since=1574621563972751361 classified=none
+2026-11-24 10:20:00 | mallykhongsuy | Captcha solved! - sleeping 1.1578197502633554s before restart.
+
+===== s1renx.21 | bắt đầu 11:10:45 | kết thúc 11:11:09 | RESOLVED | owo bot confirmed the solve =====
+2026-11-24 11:10:45 | s1renx.21 | Captcha detected!
+2026-11-24 11:10:45 | s1renx.21 |  cursor=1574621667114877010
+2026-11-24 11:10:45 | s1renx.21 | webhook Url seems invalid
+2026-11-24 11:10:45 | s1renx.21 | Attempting to solve hcaptcha
+2026-11-24 11:10:45 | s1renx.21 |  provider order=['captchaly', 'yescaptcha']
+2026-11-24 11:10:45 | - | Using cached OAuth session!
+2026-11-24 11:11:08 | - | provider=captchaly attempt=1/3 variant=standard result=token_received
+2026-11-24 11:11:08 | - | provider=captchaly result=solved
+2026-11-24 11:11:08 | s1renx.21 |  solve returned provider=captchaly
+2026-11-24 11:11:09 | s1renx.21 |  DM poll iter=1 since=1574621667114877010 classified=none
+2026-11-24 11:11:09 | s1renx.21 | Captcha solved! - sleeping 1.5050562145717357s before restart.
+
+===== mallykhongsuy | bắt đầu 11:12:15 | kết thúc 11:13:01 | RESOLVED | owo bot confirmed the solve =====
+2026-11-24 11:12:15 | mallykhongsuy | Captcha detected!
+2026-11-24 11:12:15 | mallykhongsuy |  cursor=1574625609831948363
+2026-11-24 11:12:15 | mallykhongsuy | webhook Url seems invalid
+2026-11-24 11:12:15 | mallykhongsuy | Attempting to solve hcaptcha
+2026-11-24 11:12:15 | mallykhongsuy |  provider order=['captchaly', 'yescaptcha']
+2026-11-24 11:12:15 | - | Using cached OAuth session!
+2026-11-24 11:13:01 | - | provider=captchaly attempt=1/3 variant=standard result=token_received
+2026-11-24 11:13:01 | - | provider=captchaly result=solved
+2026-11-24 11:13:01 | mallykhongsuy |  solve returned provider=captchaly
+2026-11-24 11:13:01 | mallykhongsuy |  DM poll iter=1 since=1574625609831948363 classified=none
+2026-11-24 11:13:01 | mallykhongsuy | Captcha solved! - sleeping 1.5918772365732132s before restart.
+
+===== b0bbei | bắt đầu 11:13:21 | kết thúc 11:13:54 | RESOLVED | owo bot confirmed the solve =====
+2026-11-24 11:13:21 | b0bbei | Captcha detected!
+2026-11-24 11:13:21 | b0bbei |  cursor=1574601682820534285
+2026-11-24 11:13:21 | b0bbei | webhook Url seems invalid
+2026-11-24 11:13:21 | b0bbei | Attempting to solve hcaptcha
+2026-11-24 11:13:21 | b0bbei |  provider order=['captchaly', 'yescaptcha']
+2026-11-24 11:13:54 | - | provider=captchaly attempt=1/3 variant=standard result=token_received
+2026-11-24 11:13:54 | - | provider=captchaly result=solved
+2026-11-24 11:13:54 | b0bbei |  solve returned provider=captchaly
+2026-11-24 11:13:54 | b0bbei |  DM poll iter=1 since=1574601682820534285 classified=none
+2026-11-24 11:13:54 | b0bbei | Captcha solved! - sleeping 1.7052269568261305s before restart.
+
+===== s1renx.21 | bắt đầu 11:15:16 | kết thúc 11:15:31 | RESOLVED | owo bot confirmed the solve =====
+2026-11-24 11:15:16 | s1renx.21 | Captcha detected!
+2026-11-24 11:15:16 | s1renx.21 |  cursor=1574638482243195043
+2026-11-24 11:15:16 | s1renx.21 | webhook Url seems invalid
+2026-11-24 11:15:16 | s1renx.21 | Attempting to solve hcaptcha
+2026-11-24 11:15:16 | s1renx.21 |  provider order=['captchaly', 'yescaptcha']
+2026-11-24 11:15:17 | - | Using cached OAuth session!
+2026-11-24 11:15:30 | - | provider=captchaly attempt=1/5 variant=standard result=token_received
+2026-11-24 11:15:30 | - | provider=captchaly result=solved
+2026-11-24 11:15:30 | s1renx.21 |  solve returned provider=captchaly
+2026-11-24 11:15:31 | s1renx.21 | Captcha solved! - sleeping 1.241659469687332s before restart.
+
+===== mallykhongsuy | bắt đầu 11:16:59 | kết thúc 11:17:15 | RESOLVED | owo bot confirmed the solve =====
+2026-11-24 11:16:59 | mallykhongsuy | Captcha detected!
+2026-11-24 11:16:59 | mallykhongsuy |  cursor=1574638952911077442
+2026-11-24 11:16:59 | mallykhongsuy | webhook Url seems invalid
+2026-11-24 11:16:59 | mallykhongsuy | Attempting to solve hcaptcha
+2026-11-24 11:16:59 | mallykhongsuy |  provider order=['captchaly', 'yescaptcha']
+2026-11-24 11:17:00 | - | Using cached OAuth session!
+2026-11-24 11:17:15 | - | provider=captchaly attempt=1/5 variant=standard result=token_received
+2026-11-24 11:17:15 | - | provider=captchaly result=solved
+2026-11-24 11:17:15 | mallykhongsuy |  solve returned provider=captchaly
+2026-11-24 11:17:15 | mallykhongsuy | Captcha solved! - sleeping 1.870673527942222s before restart.
+
+===== s1renx.21 | bắt đầu 11:17:32 | kết thúc 11:17:54 | RESOLVED | owo bot confirmed the solve =====
+2026-11-24 11:17:32 | s1renx.21 | Captcha detected!
+2026-11-24 11:17:32 | s1renx.21 |  cursor=1574639580408193055
+2026-11-24 11:17:32 | s1renx.21 | webhook Url seems invalid
+2026-11-24 11:17:32 | s1renx.21 | Attempting to solve hcaptcha
+2026-11-24 11:17:32 | s1renx.21 |  provider order=['captchaly', 'yescaptcha']
+2026-11-24 11:17:32 | - | Using cached OAuth session!
+2026-11-24 11:17:53 | - | provider=captchaly attempt=1/5 variant=standard result=token_received
+2026-11-24 11:17:53 | - | provider=captchaly result=solved
+2026-11-24 11:17:53 | s1renx.21 |  solve returned provider=captchaly
+2026-11-24 11:17:53 | s1renx.21 |  DM poll iter=1 since=1574639580408193055 classified=none
+2026-11-24 11:17:54 | s1renx.21 | Captcha solved! - sleeping 1.1648543600747685s before restart.
+
+===== mallykhongsuy | bắt đầu 11:17:43 | kết thúc 11:17:56 | RESOLVED | owo bot confirmed the solve =====
+2026-11-24 11:17:43 | mallykhongsuy | Captcha detected!
+2026-11-24 11:17:43 | mallykhongsuy |  cursor=1574640018717413509
+2026-11-24 11:17:43 | mallykhongsuy | webhook Url seems invalid
+2026-11-24 11:17:43 | mallykhongsuy | Attempting to solve hcaptcha
+2026-11-24 11:17:43 | mallykhongsuy |  provider order=['captchaly', 'yescaptcha']
+2026-11-24 11:17:43 | - | Using cached OAuth session!
+2026-11-24 11:17:56 | - | provider=captchaly attempt=1/3 variant=standard result=token_received
+2026-11-24 11:17:56 | - | provider=captchaly result=solved
+2026-11-24 11:17:56 | mallykhongsuy |  solve returned provider=captchaly
+2026-11-24 11:17:56 | mallykhongsuy | Captcha solved! - sleeping 1.7609634452424765s before restart.
+
